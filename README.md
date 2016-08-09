@@ -14,7 +14,7 @@ Developed with HTML5, CSS3, javascript, Angular.js, AJAX/JSON, PHP & SQL.
 - Testing Framework assumes your either running PHP 5.3, 5.4, 5.5 or 5.6
 
 ##### Tested in: 
-- Firefox 45.0.2 
+- Firefox 48.0
 - Chrome 51.0.2
 - Internet Explorer 11.0.9600
 
