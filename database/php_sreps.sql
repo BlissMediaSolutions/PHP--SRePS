@@ -1,10 +1,13 @@
 CREATE DATABASE IF NOT EXISTS php_SRePS;
 USE php_SRePS;
 
+DROP TRIGGER IF EXISTS TRIG_Product_Insert_Checks; 
+DROP TRIGGER IF EXISTS TRIG_Product_Update_Checks;
+DROP TRIGGER IF EXISTS TRIG_SaleLine_Insert_Checks;
+DROP TRIGGER IF EXISTS TRIG_SaleLine_Update_Checks;
 DROP TABLE IF EXISTS SaleLine, Sale, Customer, Product, ProductGroup;
 
 #Create tables
-
 CREATE TABLE ProductGroup(
 	Id int PRIMARY KEY AUTO_INCREMENT,
     Name varchar(50) NOT NULL
@@ -19,9 +22,7 @@ CREATE TABLE Product(
     QuantitySold int NOT NULL,
     QuantityToOrder int NOT NULL,
     QuantityRequested int NOT NULL,
-    CONSTRAINT FK_Product_ProductGroup FOREIGN KEY (ProductGroupId) REFERENCES ProductGroup(Id),
-    CONSTRAINT CHK_Price CHECK (Price >= 0), #MySQL does not have Check constraints - this would work in other DBMS's though
-    CONSTRAINT CHK_QuantityOnHand CHECK (QuantityOnHand >= 0) #MySQL does not have Check constraints - this would work in other DBMS's though
+    CONSTRAINT FK_Product_ProductGroup FOREIGN KEY (ProductGroupId) REFERENCES ProductGroup(Id)
 );
 
 CREATE TABLE Customer(
@@ -44,9 +45,106 @@ CREATE TABLE SaleLine(
     SaleId int NOT NULL,
     Quantity int NOT NULL,
     CONSTRAINT FK_SaleLine_Product FOREIGN KEY (ProductId) REFERENCES Product(Id),
-    CONSTRAINT FK_SaleLine_Sale FOREIGN KEY (SaleId) REFERENCES Sale(Id),
-    CONSTRAINT CHK_Quantity CHECK (Quantity >= 1) #MySQL does not have Check constraints - this would work in other DBMS's though
+    CONSTRAINT FK_SaleLine_Sale FOREIGN KEY (SaleId) REFERENCES Sale(Id)
 );
+
+#Create triggers to mimic CHECK constraints
+delimiter //
+CREATE TRIGGER TRIG_Product_Insert_Checks BEFORE INSERT ON Product
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Price < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.Price: ', 
+            cast(NEW.Price as char));
+	ELSEIF NEW.QuantityOnHand < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantityOnHand: ', 
+            cast(NEW.QuantityOnHand as char));
+	ELSEIF NEW.QuantitySold < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantitySold: ', 
+            cast(NEW.QuantitySold as char));
+	ELSEIF NEW.QuantityToOrder < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantityToOrder: ', 
+            cast(NEW.QuantityToOrder as char));
+	ELSEIF NEW.QuantityRequested < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantityRequested: ', 
+            cast(NEW.QuantityRequested as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+//
+
+
+CREATE TRIGGER TRIG_Product_Update_Checks BEFORE UPDATE ON Product
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Price < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.Price: ', 
+            cast(new.QuantityOnHand as char));
+	ELSEIF NEW.QuantityOnHand < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantityOnHand: ', 
+            cast(new.QuantityOnHand as char));
+	ELSEIF NEW.QuantitySold < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantitySold: ', 
+            cast(new.QuantitySold as char));
+	ELSEIF NEW.QuantityToOrder < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantityToOrder: ', 
+            cast(new.QuantityToOrder as char));
+	ELSEIF NEW.QuantityRequested < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantityRequested: ', 
+            cast(new.QuantityRequested as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+//
+
+CREATE TRIGGER TRIG_SaleLine_Insert_Checks BEFORE INSERT ON SaleLine
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Quantity < 1 THEN
+		set msg = concat('TRIG_SaleLine_Insert_Checks Error:',
+			'Trying to insert a non-positive value into SaleLine.Quantity: ', 
+            cast(NEW.Quantity as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+//
+
+CREATE TRIGGER TRIG_SaleLine_Update_Checks BEFORE UPDATE ON SaleLine
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Quantity < 1 THEN
+		set msg = concat('TRIG_SaleLine_Update_Checks Error:',
+			'Trying to update a non-positive value in SaleLine.Quantity: ', 
+            cast(NEW.Quantity as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+//
+
+delimiter ;
+
 
 #Insert static reference data
 INSERT INTO ProductGroup(Name) VALUES('Painkillers');
