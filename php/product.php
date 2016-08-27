@@ -41,7 +41,7 @@
 			}
 
 			function getId(){
-				return $this->$id;
+				return $this->id;
 			}
 
 			function setProdGroupID($par){
@@ -49,7 +49,7 @@
 			}
 
 			function getProdGroupID(){
-				return $this->$prodgroupid;
+				return $this->prodgroupid;
 			}
 
 			function setName($par){
@@ -57,7 +57,7 @@
 			}
 
 			function getName(){
-				return $this->$name;
+				return $this->name;
 			}
 
 			function setPrice($par){
@@ -65,7 +65,7 @@
 			}
 
 			function getPrice(){
-				return $this->$price;
+				return $this->price;
 			}
 
 			function setQtyOnHand($par){
@@ -73,7 +73,7 @@
 			}
 
 			function getQtyOnHand(){
-				return $this->$qtyOnHand;
+				return $this->qtyOnHand;
 			}
 
 			function setQtySold($par){
@@ -81,7 +81,7 @@
 			}
 
 			function getQtySold(){
-				return $this->$qtySold;
+				return $this->qtySold;
 			}
 
 			function setQtyToOrder($par){
@@ -89,7 +89,7 @@
 			}
 
 			function getQtyToOrder(){
-				return $this->$qtyToOrder;
+				return $this->qtyToOrder;
 			}
 
 			function setQtyRequested($par){
@@ -97,7 +97,7 @@
 			}
 
 			function getQtyRequested(){
-				return $this->$qtyRequested;
+				return $this->qtyRequested;
 			}
 
 			function addNewProduct(){
