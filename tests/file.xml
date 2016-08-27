@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="php_SRePS">
+	<table_data name="Customer">
+	</table_data>
+	<table_data name="ProductGroup">
+	<row>
+		<field name="Id">1</field>
+		<field name="Name">Painkillers</field>
+	</row>
+	<row>
+		<field name="Id">2</field>
+		<field name="Name">Prescription drugs</field>
+	</row>
+	<row>
+		<field name="Id">3</field>
+		<field name="Name">Vitamins</field>
+	</row>
+	<row>
+		<field name="Id">4</field>
+		<field name="Name">Fragrances</field>
+	</row>
+	<row>
+		<field name="Id">5</field>
+		<field name="Name">Weight loss</field>
+	</row>
+	<row>
+		<field name="Id">6</field>
+		<field name="Name">Dental care</field>
+	</row>
+	</table_data>
+	<table_data name="Product">
+	<row>
+		<field name="Id">1</field>
+		<field name="ProductGroupId">1</field>
+		<field name="Name">Panadol 500mg 100 tablets</field>
+		<field name="Price">9.99</field>
+		<field name="QuantityOnHand">400</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">2</field>
+		<field name="ProductGroupId">1</field>
+		<field name="Name">Panadol 500mg 50 tablets</field>
+		<field name="Price">6.99</field>
+		<field name="QuantityOnHand">250</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">3</field>
+		<field name="ProductGroupId">1</field>
+		<field name="Name">Panadol Rapid 20 tablets</field>
+		<field name="Price">4.49</field>
+		<field name="QuantityOnHand">382</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">4</field>
+		<field name="ProductGroupId">1</field>
+		<field name="Name">Nurofen 200mg 96 tablets</field>
+		<field name="Price">15.99</field>
+		<field name="QuantityOnHand">382</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">5</field>
+		<field name="ProductGroupId">1</field>
+		<field name="Name">Nurofen for Children 1-5 Years Strawberry</field>
+		<field name="Price">17.99</field>
+		<field name="QuantityOnHand">37</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">6</field>
+		<field name="ProductGroupId">2</field>
+		<field name="Name">Lipitor 20mg Tablets 30</field>
+		<field name="Price">6.99</field>
+		<field name="QuantityOnHand">21</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">7</field>
+		<field name="ProductGroupId">2</field>
+		<field name="Name">Plavix 75mg Tablets 28 (a)</field>
+		<field name="Price">7.29</field>
+		<field name="QuantityOnHand">3</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">8</field>
+		<field name="ProductGroupId">3</field>
+		<field name="Name">Swisse Ultiboost Calcium + Vitamin D</field>
+		<field name="Price">13.00</field>
+		<field name="QuantityOnHand">421</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">9</field>
+		<field name="ProductGroupId">3</field>
+		<field name="Name">Herron Osteo Eze Active Plus MSM 120 Tablets</field>
+		<field name="Price">40.83</field>
+		<field name="QuantityOnHand">21</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">10</field>
+		<field name="ProductGroupId" xsi:nil="true" />
+		<field name="Name">Blackmores Odourless Fish Oil 1000mg Bulk Pack 500 Capsules</field>
+		<field name="Price">38.20</field>
+		<field name="QuantityOnHand">7</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">11</field>
+		<field name="ProductGroupId" xsi:nil="true" />
+		<field name="Name">Ansell Glove Hany Disposable 24</field>
+		<field name="Price">3.99</field>
+		<field name="QuantityOnHand">21</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">12</field>
+		<field name="ProductGroupId" xsi:nil="true" />
+		<field name="Name">Morning Fresh Dishwashing Liquid Lemon 400ml</field>
+		<field name="Price">1.50</field>
+		<field name="QuantityOnHand">20</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	</table_data>
+	<triggers name="Product">
+		<trigger Trigger="TRIG_Product_Insert_Checks" sql_mode="" character_set_client="utf8mb4" collation_connection="utf8mb4_general_ci" Database_Collation="utf8_general_ci">
+<![CDATA[
+CREATE DEFINER=`root`@`localhost` TRIGGER TRIG_Product_Insert_Checks BEFORE INSERT ON Product
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Price < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.Price: ', 
+            cast(NEW.Price as char));
+	ELSEIF NEW.QuantityOnHand < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantityOnHand: ', 
+            cast(NEW.QuantityOnHand as char));
+	ELSEIF NEW.QuantitySold < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantitySold: ', 
+            cast(NEW.QuantitySold as char));
+	ELSEIF NEW.QuantityToOrder < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantityToOrder: ', 
+            cast(NEW.QuantityToOrder as char));
+	ELSEIF NEW.QuantityRequested < 0 THEN
+		set msg = concat('TRIG_Product_Insert_Checks Error:',
+			'Trying to insert a negative value into Product.QuantityRequested: ', 
+            cast(NEW.QuantityRequested as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+]]>
+		</trigger>
+		<trigger Trigger="TRIG_Product_Update_Checks" sql_mode="" character_set_client="utf8mb4" collation_connection="utf8mb4_general_ci" Database_Collation="utf8_general_ci">
+<![CDATA[
+CREATE DEFINER=`root`@`localhost` TRIGGER TRIG_Product_Update_Checks BEFORE UPDATE ON Product
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Price < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.Price: ', 
+            cast(new.QuantityOnHand as char));
+	ELSEIF NEW.QuantityOnHand < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantityOnHand: ', 
+            cast(new.QuantityOnHand as char));
+	ELSEIF NEW.QuantitySold < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantitySold: ', 
+            cast(new.QuantitySold as char));
+	ELSEIF NEW.QuantityToOrder < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantityToOrder: ', 
+            cast(new.QuantityToOrder as char));
+	ELSEIF NEW.QuantityRequested < 0 THEN
+		set msg = concat('TRIG_Product_Update_Checks Error:',
+			'Trying to update a negative value in Product.QuantityRequested: ', 
+            cast(new.QuantityRequested as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+]]>
+		</trigger>
+	</triggers>
+	<table_data name="Sale">
+	</table_data>
+	<table_data name="SaleLine">
+	</table_data>
+	<triggers name="SaleLine">
+		<trigger Trigger="TRIG_SaleLine_Insert_Checks" sql_mode="" character_set_client="utf8mb4" collation_connection="utf8mb4_general_ci" Database_Collation="utf8_general_ci">
+<![CDATA[
+CREATE DEFINER=`root`@`localhost` TRIGGER TRIG_SaleLine_Insert_Checks BEFORE INSERT ON SaleLine
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Quantity < 1 THEN
+		set msg = concat('TRIG_SaleLine_Insert_Checks Error:',
+			'Trying to insert a non-positive value into SaleLine.Quantity: ', 
+            cast(NEW.Quantity as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+]]>
+		</trigger>
+		<trigger Trigger="TRIG_SaleLine_Update_Checks" sql_mode="" character_set_client="utf8mb4" collation_connection="utf8mb4_general_ci" Database_Collation="utf8_general_ci">
+<![CDATA[
+CREATE DEFINER=`root`@`localhost` TRIGGER TRIG_SaleLine_Update_Checks BEFORE UPDATE ON SaleLine
+FOR EACH ROW
+BEGIN
+	DECLARE msg varchar(128);
+	IF NEW.Quantity < 1 THEN
+		set msg = concat('TRIG_SaleLine_Update_Checks Error:',
+			'Trying to update a non-positive value in SaleLine.Quantity: ', 
+            cast(NEW.Quantity as char));
+	END IF;
+    IF msg IS NOT NULL THEN
+		signal sqlstate '45000' set message_text = msg;
+	END IF;
+END
+]]>
+		</trigger>
+	</triggers>
+</database>
+</mysqldump>
