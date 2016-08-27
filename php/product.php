@@ -19,6 +19,17 @@
       private $qtyRequested;
 
       /*Class Constructor */
+			public function __construct ($id, $prodgroupid, $name, $price, $qtyOnHand, $qtySold, $qtyToOrder, $qtyRequested)
+		{
+			$this->id = $id;
+			$this->prodgroupid = $prodgroupid;
+			$this->name = $name;
+			$this->price = $price;
+			$this->qtyOnHand = $qtyOnHand;
+			$this->qtySold = $qtySold;
+			$this->qtyToOrder = $qtyToOrder;
+			$this->qtyRequested = $qtyRequested;
+		}
 
       /* Class Destructor */
       function __destruct(){

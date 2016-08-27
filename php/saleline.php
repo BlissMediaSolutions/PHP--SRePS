@@ -15,6 +15,13 @@
       private $quantity;
 
       /*Class Constructor */
+			public function __construct ($id, $prodid, $saleid, $quantity)
+			{
+					$this->id = $id;
+					$this->prodid = $prodid;
+					$this->saleid = $saleid;
+					$this->quantity = $quantity;
+			}
 
       /* Class Destructor */
 		  function __destruct(){
