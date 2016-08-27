@@ -33,7 +33,7 @@
       }
 
       function getId(){
-        return $this->$id;
+        return $this->id;
       }
 
       function setProductId($par){
@@ -41,7 +41,7 @@
       }
 
       function getProductId(){
-        return $this->$prodid;
+        return $this->prodid;
       }
 
       function setSaleId($par){
@@ -49,7 +49,7 @@
       }
 
       function getSaleId(){
-        return $this->$saleid;
+        return $this->saleid;
       }
 
       function setQuantity($par){
@@ -57,7 +57,7 @@
       }
 
       function getQuantity(){
-        return $this->$quantity;
+        return $this->quantity;
       }
 
       function addNewSale(){
