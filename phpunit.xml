@@ -13,6 +13,8 @@
    <testsuites>
   		<testsuite name="php SRePS Test Suite">
     		<!--<directory>tests/</directory> -->
+    		<file>tests/ProductTest.php</file>
+    		<file>tests/SaleLineTest.php</file>
     		<file>tests/DatabaseTestBase.php</file>
     		<file>tests/DatabaseConstraintTest.php</file>
     		</testsuite>
