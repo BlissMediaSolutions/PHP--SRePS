@@ -1,5 +1,6 @@
 # PHP‐SRePS
 ##### The Sales Reporting and Prediction System - designed to provide 'People Health Phamarcy' with a Sales Reporting System
+![alt text](https://travis-ci.org/BlissMediaSolutions/PHP--SRePS.svg?branch=master "Travis CI Build Status")
 
 Status: Incomplete, Under Development
 
