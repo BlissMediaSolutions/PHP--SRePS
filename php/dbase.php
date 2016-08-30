@@ -12,7 +12,7 @@ abstract class dbase
     function WriteDelDbase($sqltable, $query, &$insertID = NULL)
     {
         require("settings.php");
-        $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+        $conn = mysqli_connect($host, $user, $pwd, $sql_db);
         if (!$conn)
         {
             //echo "<p><font color='red'> Error Connecting to Database </font></p>";
@@ -35,7 +35,7 @@ abstract class dbase
     function GetLastID($sqltable, $query)
     {
         require("settings.php");
-        $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+        $conn = mysqli_connect($host, $user, $pwd, $sql_db);
         if (!$conn)
         {
             return false;
@@ -48,6 +48,53 @@ abstract class dbase
             return false;
         }
         return $result;
+     }
+
+     //function to return all the Product Group Names via a JSON response
+     function GetProductGroups()
+     {
+       require("settings.php");
+       $conn = mysqli_connect($host, $user, $pwd, $sql_db);
+
+        if (mysqli_connect_errno())
+        {
+            return false;
+            //echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $query = "SELECT Name FROM PRODUCT";
+        $result = mysqli_query($conn, $query);
+
+        $rows = array();
+        while($r = mysqli_fetch_array($result)) {
+          $rows[] = $r;
+          }
+        echo json_encode($rows);
+
+        mysqli_close($conn);
+     }
+
+     //function which receives a Product Group Name, and returns all the items of this group via JSON
+     function GetProductItemName($par)
+     {
+        require("settings.php");
+        $conn = mysqli_connect($host, $user, $pwd, $sql_db);
+
+        if (mysqli_connect_errno())
+        {
+            return false;
+        }
+
+        $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = $par";
+        $result = mysqli_query($conn, $query);
+
+        $rows = array();
+        while($r = mysqli_fetch_array($result)) {
+          $rows[] = $r;
+          }
+        echo json_encode($rows);
+
+        mysqli_close($conn);
      }
 
  }
