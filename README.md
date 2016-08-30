@@ -2,6 +2,7 @@
 ##### The Sales Reporting and Prediction System - designed to provide 'People Health Pharmacy' with a Sales Reporting System
 ![alt text](https://travis-ci.org/BlissMediaSolutions/PHP--SRePS.svg?branch=master "Travis CI Build Status")
 [![Dependency Status](https://www.versioneye.com/user/projects/57c1ba1d939fc600508e8c0f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57c1ba1d939fc600508e8c0f)
+[![codecov](https://codecov.io/gh/BlissMediaSolutions/PHP--SRePS/branch/master/graph/badge.svg)](https://codecov.io/gh/BlissMediaSolutions/PHP--SRePS)
 
 Status: Incomplete, Under Development
 
