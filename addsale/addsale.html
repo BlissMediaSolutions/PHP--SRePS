@@ -14,46 +14,59 @@
 <body>
     <div class="container-fluid">
         <div class="row"> </div>
-        <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4 centered">
+        <div class="row" data-ng-init="products=[
+                                       {name:'Panadol', price:15},
+                                       {name:'Voltaren', price:20},
+                                       {name:'Vitamin C', price:12.5},
+                                       {name:'Sambucol', price:25},
+                                       ]">
+            <div class="col-sm-2 centered"> </div>
+            <div class="col-sm-8 centered">
+                <!-- The following HTML 'based' angular makes the page appear functional, it does not actually do anything other than mimic something simmilar to the end result. 
+                    If proper implimentation of the angular is necessary or requested, I will created an app alon with functions that can get the price from each 
+                    products and calculate cost, etc.-->
                 <h1>Add Sale</h1>
                 <hr>
-                <!-- INPUT FORM -->
-                <form name="saleForm" data-ng-init="qty = 0; itmVal = 5.00">
-                    <!-- PRODUCT GROUP -->
-                    <div class="form-group">
-                        <label for="group">Product Group</label>
-                        <select class="form-control" id="group">
-                            <option>Group 1</option>
-                            <option>Group 2</option>
-                            <option>Group 3</option>
-                            <option>Group 4</option>
-                        </select>
+                <div class="row">
+                    <div class="col-sm-6 centered">
+                        <!-- INPUT FORM -->
+                        <form name="saleForm" data-ng-init="qty = 0; itmVal = 5.00">
+                            <!-- PRODUCT GROUP -->
+                            <div class="form-group">
+                                <label for="group">Product Group</label>
+                                <select class="form-control" id="group">
+                                    <option>Group 1</option>
+                                    <option>Group 2</option>
+                                    <option>Group 3</option>
+                                    <option>Group 4</option>
+                                </select>
+                            </div>
+                            <!-- PRODUCT -->
+                            <div class="form-group">
+                                <label for="product">Product</label>
+                                <select class="form-control" id="product" data-ng-model="selectedProduct">
+                                    <option data-ng-repeat="product in products">{{product.name}}</option>
+                                </select>
+                            </div>
+                            <!-- QUANTITY -->
+                            <div class="form-group">
+                                <label for="qty">Quantity</label>
+                                <input type="text" class="form-control" id="qty" data-ng-model="qty" pattern="^(0|[1-9][0-9]*)$"> </div>
+                        </form>
                     </div>
-                    <!-- PRODUCT -->
-                    <div class="form-group">
-                        <label for="product">Product</label>
-                        <select class="form-control" id="product">
-                            <option>Panadol</option>
-                            <option>Voltaren</option>
-                            <option>Vitamin C</option>
-                            <option>Sambucol</option>
-                        </select>
+                    <div class="col-sm-6 centered">
+                        <!-- OUTPUT DATA -->
+                        <div>
+                            <p>Selected : {{selectedProduct}}</p>
+                            <p>Item Price : ${{itmVal}}</p>
+                            <p>Quantity : {{qty}}</p>
+                            <p>Total : ${{itmVal*qty}}</p>
+                            <p>Total (Incl. GST) : ${{(itmVal*qty) + (itmVal*qty)*0.1}}</p>
+                        </div>
                     </div>
-                    <!-- QUANTITY -->
-                    <div class="form-group">
-                        <label for="qty">Quantity</label>
-                        <input type="text" class="form-control" id="qty" data-ng-model="qty" pattern="^(0|[1-9][0-9]*)$"> </div>
-                </form>
-                <!-- OUTPUT DATA -->
-                <div>
-                    <p>Item Price : {{itmVal}}</p>
-                    <p>Quantity : {{qty}}</p>
-                    <p>Total : ${{itmVal*qty}}</p>
                 </div>
-            </div>
-            <div class="col-sm-4"></div>
+                <hr> </div>
+            <div class="col-sm-2"></div>
         </div>
         <div class="row"></div>
     </div>
