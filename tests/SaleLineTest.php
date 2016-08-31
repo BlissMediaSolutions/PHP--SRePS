@@ -23,10 +23,10 @@ class SaleLineTest extends PHPUnit_Framework_TestCase
 					$newSale->setSaleId('7');
 					$newSale->setQuantity('8');
 
-					$this->assertEquals('5', $newSale->getId());
-					$this->assertEquals('6', $newSale->getProductId());
-					$this->assertEquals('7', $newSale->getSaleId());
-					$this->assertEquals('8', $newSale->getQuantity());
+					$this->assertEquals('5', $newSale->setId('5'));
+					$this->assertEquals('6', $newSale->setProductId('6'));
+					$this->assertEquals('7', $newSale->setSaleId('7'));
+					$this->assertEquals('8', $newSale->setQuantity('8'));
 
 
 		}
