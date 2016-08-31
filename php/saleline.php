@@ -45,7 +45,7 @@
       }
 
       function setSaleId($par){
-        $this->$saleid = $par;
+        $this->saleid = $par;
       }
 
       function getSaleId(){
@@ -53,7 +53,7 @@
       }
 
       function setQuantity($par){
-        $this->$quantity = $par;
+        $this->quantity = $par;
       }
 
       function getQuantity(){

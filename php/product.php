@@ -85,7 +85,7 @@
 			}
 
 			function setQtyToOrder($par){
-				$this->$qtyToOrder = $par;
+				$this->qtyToOrder = $par;
 			}
 
 			function getQtyToOrder(){
