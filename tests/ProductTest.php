@@ -5,7 +5,7 @@ class ProductTest extends PHPUnit_Framework_TestCase
 	//Function to run Unit Tests on the Student Class
 	public function testProductCreate()
 	{
-	        //Testing Basic Constructor
+	        //Testing Basic Constructor + Set and Get Methods
 					$newProduct = new Product('01', '02', 'Lipitor 20mg Tablets 30', '9.99', '25', '5', '50', '0');
 
 					$this->assertEquals('01', $newProduct->getId());
@@ -25,6 +25,24 @@ class ProductTest extends PHPUnit_Framework_TestCase
 					$this->assertNotEquals('10', $newProduct->getQtySold());
 					$this->assertNotEquals('10', $newProduct->getQtyToOrder());
 					$this->assertNotEquals('5', $newProduct->getQtyRequested());
+
+					$newProduct->setId('20');
+					$newProduct->setProdGroupID('10');
+					$newProduct->setName('Panadol 500mg 100 tablets');
+					$newProduct->setPrice('25.99');
+					$newProduct->setQtyOnHand('05');
+					$newProduct->setQtySold('15');
+					$newProduct->setQtyToOrder('10');
+					$newProduct->setQtyRequested('10');
+
+					$this->assertEquals('20', $newProduct->getId());
+					$this->assertEquals('10', $newProduct->getProdGroupID());
+					$this->assertEquals('Panadol 500mg 100 tablets', $newProduct->getName());
+					$this->assertEquals('25.99', $newProduct->getPrice());
+					$this->assertEquals('05', $newProduct->getQtyOnHand());
+					$this->assertEquals('15', $newProduct->getQtySold());
+					$this->assertEquals('10', $newProduct->getQtyToOrder());
+					$this->assertEquals('10', $newProduct->getQtyRequested());
 
 		}
 }
