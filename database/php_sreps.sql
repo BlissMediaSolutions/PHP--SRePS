@@ -89,7 +89,7 @@ BEGIN
 	IF NEW.Price < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
 			'Trying to update a negative value in Product.Price: ', 
-            cast(new.QuantityOnHand as char));
+            cast(new.Price as char));
 	ELSEIF NEW.QuantityOnHand < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
 			'Trying to update a negative value in Product.QuantityOnHand: ', 
