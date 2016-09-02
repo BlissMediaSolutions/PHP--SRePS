@@ -50,32 +50,8 @@ abstract class dbase
         return $result;
      }
 
-     //function to return all the Product Group Names via a JSON response
-     function GetProductGroups()
-     {
-       require("settings.php");
-       $conn = mysqli_connect($host, $user, $pwd, $sql_db);
-
-        if (mysqli_connect_errno())
-        {
-            return false;
-            //echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
-
-        $query = "SELECT Name FROM PRODUCT";
-        $result = mysqli_query($conn, $query);
-
-        $rows = array();
-        while($r = mysqli_fetch_array($result)) {
-          $rows[] = $r;
-          }
-        echo json_encode($rows);
-
-        mysqli_close($conn);
-     }
-
-     //function which receives a Product Group Name, and returns all the items of this group via JSON
-     function GetProductItemName($par)
+     //function which performs a Dbase query based on the SQL String ($par) passed & returns the results as JSON.
+     function GetData($par)
      {
         require("settings.php");
         $conn = mysqli_connect($host, $user, $pwd, $sql_db);
@@ -85,8 +61,8 @@ abstract class dbase
             return false;
         }
 
-        $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = $par";
-        $result = mysqli_query($conn, $query);
+        //$query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = $par";
+        $result = mysqli_query($conn, $par);
 
         $rows = array();
         while($r = mysqli_fetch_array($result)) {

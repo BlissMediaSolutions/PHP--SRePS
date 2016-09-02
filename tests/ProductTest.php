@@ -5,7 +5,11 @@ class ProductTest extends PHPUnit_Framework_TestCase
 	//Function to run Unit Tests on the Student Class
 	public function testProductCreate()
 	{
-	        //Testing Basic Constructor + Set and Get Methods
+					//Testing Constructor with 1 Paramter
+					$thisProduct = new Product('03');
+					$this->assertEquals('03', $thisProduct->getProdGroupID());
+
+					//Testing Constructor with 8 Paramter
 					$newProduct = new Product('01', '02', 'Lipitor 20mg Tablets 30', '9.99', '25', '5', '50', '0');
 
 					$this->assertEquals('01', $newProduct->getId());
