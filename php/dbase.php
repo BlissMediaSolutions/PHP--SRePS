@@ -62,13 +62,13 @@ abstract class dbase
             //echo "Failed to connect to MySQL: " . mysqli_connect_error();
         }
 
-        $query = "SELECT Name FROM PRODUCT";
+        $query = "SELECT Name FROM ProductGroup";
         $result = mysqli_query($conn, $query);
-
+        
         $rows = array();
         while($r = mysqli_fetch_array($result)) {
           $rows[] = $r;
-          }
+        }
         echo json_encode($rows);
 
         mysqli_close($conn);
@@ -85,7 +85,8 @@ abstract class dbase
             return false;
         }
 
-        $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = $par";
+        $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = '$par'";
+        
         $result = mysqli_query($conn, $query);
 
         $rows = array();

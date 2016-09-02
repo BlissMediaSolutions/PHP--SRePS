@@ -14,12 +14,11 @@ app.config(function ($routeProvider) {
     })
 });
 
-app.controller('SalesController', function($scope) {
+app.controller('SalesController', function($scope, $http, $location) {
     // CSS Controlls
     $scope.addSelected = true; // Used for setting the side tab.
     
     // JavaScript + Angular
-    $scope.productGroups = ['Painkillers', 'Vitamins', 'Topical']; //Add product group strings here
     $scope.gSelected = false; // Initialise whether a group has been selected to false.
     $scope.gSelection; // Var for the group selection.
 
@@ -31,28 +30,32 @@ app.controller('SalesController', function($scope) {
     $scope.readyPage = function () {
         $scope.pageSize = 5;
         $scope.currentPage = 1;
+        $scope.populateProductGroups();
     }
 
-    $scope.populateProducts = function (group) { // Replace with PHP call.
-        if (group == "Painkillers") {
-            $scope.products = [
-                {name:'Panadol', price:'15'},
-                {name:'Neurofen', price:'12'},
-                {name:'Voltaren', price:'25'}
-            ];
-        } else if (group == "Vitamins") {
-            $scope.products = [
-                {name:'Vitamin C', price:'15'},
-                {name:'Iron', price:'12'},
-                {name:'Zinc', price:'25'}
-            ];
-        } else if (group == "Topical") {
-            $scope.products = [
-                {name:'Aloe Vera Spray', price:'15'},
-                {name:'Vitamin E Cream', price:'12'},
-                {name:'Deep Heat', price:'25'}
-            ];
-        }
+    //Get all product groups from the server
+    $scope.populateProductGroups = function(){
+        $http.post('/php/functions.php',
+            {"functionName" : "getProductGroups"})
+            .then(function successCallback(response){
+                $scope.productGroups = response.data;
+            }, function errorCallback(response){
+                //Oops! Figure out what to do here...
+                $scope.productGroups = null;
+            });
+    }
+
+    //Given a particular product group, retrieve its products from the server
+    $scope.populateProducts = function (group) {
+        $http.post('/php/functions.php', 
+            {"functionName" : "getProductItemName",
+             "productGroupName" : group})
+            .then(function successCallback(response){
+                $scope.products = response.data;
+            }, function errorCallback(response){
+                //Oops! Figure out what to do here...
+                $scope.products = null;
+            });
     }
 
     $scope.groupSelect= function(group){ // used to get selected group.
