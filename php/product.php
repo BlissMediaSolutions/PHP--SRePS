@@ -32,9 +32,14 @@ class Product extends dbase implements JsonSerializable
       	}
 	}
 
-	public function __construct1 ($prodgroupid) {
-		$this->prodgroupid = $prodgroupid;
-	}
+	//public function __construct1 ($prodgroupid) {
+	//	$this->prodgroupid = $prodgroupid;
+	//}
+  public function __construct1 ($id)
+  {
+      $this->id = $id;
+  }
+
 
 	/*Class Constructor with 8 arguments*/
 	public function __construct8 ($id, $prodgroupid, $name, $price, $qtyOnHand, $qtySold, $qtyToOrder, $qtyRequested)
@@ -126,6 +131,16 @@ class Product extends dbase implements JsonSerializable
         $result = $this->WriteDelDbase($sqltable, $query);
         return $result;
   	}
+
+    //function to Update the qtyOnHand & QtySold numbers after a sale.
+    function UpdateProductData($id, $qty){
+        $sqltable = "Product";
+        $query = "UPDATE $sqltable SET QuantityOnHand = QuantityOnHand - $qty WHERE ID = $id";
+        $result = $this->WriteDelDbase($sqltable, $query);
+
+        $query = "UPDATE $sqltable SET QuantitySold = (SELECT SUM(QuantitySold) + $qty) WHERE ID = $id";
+        $result = $this->WriteDelDbase($sqltable, $query);
+    }
 
   	//Given a row from the database representing a product, construct a product and return it.
 	public static function getProductFromDBRow($dbRow){
