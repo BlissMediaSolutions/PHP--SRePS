@@ -10,7 +10,7 @@ class ProductDBTest extends DatabaseTestBase
 	public function test_getProductFromDBRow_ReturnsValidProduct()
 	{
 		//Fetch a product from the DB and try to convert it to a Product object
-		require_once("php/settings.php");
+		require("php/settings.php");
 		require_once("php/product.php");
 
         $conn = mysqli_connect($host, $user, $pwd, $sql_db);
