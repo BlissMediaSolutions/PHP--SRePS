@@ -22,7 +22,7 @@
     
     //Insert them into the database
     foreach ($saleLines as $saleLine){
-          $saleLine->addNewSaleLine();
+         $saleLine->addNewSaleLine();
 
         //Get the Product ID & create a new product
         $prodid = $saleLine->getProductId();
@@ -37,16 +37,10 @@
             return false;
         } else {
             $result = mysql_query($conn, $query);
-            //return $result;
         }
         mysqli_close($conn);
 
         $thisProduct = new Product($result);
-<<<<<<< HEAD
-=======
-        
-        //Update the Product table Qty's for the new Sale.
->>>>>>> 32862346511d65fddf5c6f3117503f9c87042935
         $thisProduct->UpdateProductData($prodid, $qty);
     }
 ?>
