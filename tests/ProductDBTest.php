@@ -5,13 +5,13 @@ require_once('DatabaseTestBase.php');
 //To run: navigate to the main project folder in bash and run the following command:
 //phpunit --configuration tests/phpunit.xml tests/ProductDBTest.php
 
-class DatabaseConstraintTest extends DatabaseTestBase
+class ProductDBTest extends DatabaseTestBase
 {
 	public function test_getProductFromDBRow_ReturnsValidProduct()
 	{
 		//Fetch a product from the DB and try to convert it to a Product object
-		require("php/settings.php");
-		require("php/product.php");
+		require_once("php/settings.php");
+		require_once("php/product.php");
 
         $conn = mysqli_connect($host, $user, $pwd, $sql_db);
         $result = mysqli_query($conn, 'SELECT * FROM Product WHERE Id = 1');
