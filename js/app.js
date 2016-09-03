@@ -34,6 +34,8 @@ app.controller('SalesController', function($scope, $http) {
 
     $scope.item; // Object for individual sale items.
     $scope.itemArray = []; // Array of sale items. 
+    $scope.totalPrice = 0.0;
+    var salesController = this;
 
     $scope.readyPage = function () {
         $scope.pageSize = 5;
@@ -64,8 +66,14 @@ app.controller('SalesController', function($scope, $http) {
     }
 
     $scope.createSaleItem = function(product, qty) { // add sale item to array.
-        $scope.sale = {name:product.name,qty:qty,cost:parseFloat(product.price)*parseFloat(qty)};
+        $scope.sale = {
+            productId:product.id,
+            name:product.name,
+            qty:qty,
+            cost:parseFloat(product.price)*parseFloat(qty)
+        };
         $scope.itemArray.push($scope.sale);
+        salesController.updateTotalPrice();
     }
 
     $scope.maxPage = function () {
@@ -83,6 +91,33 @@ app.controller('SalesController', function($scope, $http) {
         if ($scope.currentPage !== 1) {
             $scope.currentPage = $scope.currentPage - 1;
         }
+    };
+
+    $scope.cancelSale = function() {
+        $scope.itemArray = [];
+        $scope.totalPrice = 0.0;
+    };
+
+    $scope.commitSale = function(){
+        $http({
+            url: '/php/AddSale.php',
+            method: 'POST',
+            data: $scope.itemArray
+        })
+        .then(function successCallback(response){
+            $scope.itemArray = [];
+            $scope.totalPrice = 0.0;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+        });
+    };
+
+    this.updateTotalPrice = function() {
+        var price = 0;
+        for (var i = 0; i < $scope.itemArray.length; i++){
+            price += $scope.itemArray[i].cost;
+        }
+        $scope.totalPrice = price;
     };
 
     $scope.readyPage();

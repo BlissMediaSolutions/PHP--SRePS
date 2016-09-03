@@ -60,10 +60,14 @@
         return $this->quantity;
       }
 
-      function addNewSale(){
-        $sqltable = "SALELINE";
-        $query = "INSERT INTO $sqltable (ProductId, SaleId, Quantity) VALUES ('$this->prodid', '$this->saleid', '$this->$quantity')";
-        $result = $this->WriteDelDbase($sqltable, $query);
+      function addNewSaleLine(){
+        $sqltable = "SaleLine";
+        $query = "INSERT INTO $sqltable (ProductId, SaleId, Quantity) VALUES ($this->prodid, $this->saleid, $this->quantity)";
+        
+        $insertId = 0;
+        $result = $this->WriteDelDbase($sqltable, $query, $insertId);
+
+        $this->setId($insertId);
         return $result;
       }
 	}

@@ -18,6 +18,8 @@
     		<file>tests/DatabaseTestBase.php</file>
     		<file>tests/DatabaseConstraintTest.php</file>
             <file>tests/ProductDBTest.php</file>
+            <file>tests/SaleDBTest.php</file>
+            <file>tests/SaleLineDBTest.php</file>
     		</testsuite>
 	</testsuites>
 
