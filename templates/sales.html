@@ -20,7 +20,7 @@
 			<div class="form-group" ng-show="gSelected">
 			    <!--  -->
 			    <label for="product">Product:</label>
-			    <select class="form-control" id="product" ng-model="product" ng-options="product.name for product in products"></select>
+			    <select class="form-control" id="product" ng-model="product" ng-options="product.Name for product in products"></select>
 			    <label for="qty">Quantity:</label>
 			    <input type="text" class="form-control" id="qty" ng-model="qty" pattern="^[0-9]*$">
 			    <button type="button" class="btn btn-default btn-lg" ng-click="createSaleItem(product, qty)">Add</button>

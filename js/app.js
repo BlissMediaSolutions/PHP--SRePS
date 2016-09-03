@@ -14,7 +14,7 @@ app.config(function ($routeProvider) {
     })
 });
 
-app.controller('SalesController', function($scope) {
+app.controller('SalesController', function($scope, $http) {
     // CSS Controlls
     $scope.addSelected = true; // Used for setting the side tab.
     
@@ -33,26 +33,18 @@ app.controller('SalesController', function($scope) {
         $scope.currentPage = 1;
     }
 
-    $scope.populateProducts = function (group) { // Replace with PHP call.
-        if (group == "Painkillers") {
-            $scope.products = [
-                {name:'Panadol', price:'15'},
-                {name:'Neurofen', price:'12'},
-                {name:'Voltaren', price:'25'}
-            ];
-        } else if (group == "Vitamins") {
-            $scope.products = [
-                {name:'Vitamin C', price:'15'},
-                {name:'Iron', price:'12'},
-                {name:'Zinc', price:'25'}
-            ];
-        } else if (group == "Topical") {
-            $scope.products = [
-                {name:'Aloe Vera Spray', price:'15'},
-                {name:'Vitamin E Cream', price:'12'},
-                {name:'Deep Heat', price:'25'}
-            ];
-        }
+    $scope.populateProducts = function ($groupName) {
+        $http({
+            url: '/php/GetProductGroup.php',
+            method: 'GET',
+            params: {'ProdGroupName' : $groupName}
+        })
+        .then(function successCallback(response){
+            $scope.products = response.data;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.products = null;
+        });
     }
 
     $scope.groupSelect= function(group){ // used to get selected group.

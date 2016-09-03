@@ -11,14 +11,14 @@
     {
         return false;
     }
-    $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = $par";
+    $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = '$prodgroupname'";
     $result = mysqli_query($conn, $query);
+
     $prodgroupid = mysqli_fetch_field($result);
 
     mysqli_free_result($result);
     mysqli_close($conn);
 
     $newProduct = new Product($prodgroupid);
-    $newProduct.GetData($sqlstring);
-
+    $newProduct->GetData($query);
 ?>
