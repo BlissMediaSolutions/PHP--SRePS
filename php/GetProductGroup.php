@@ -2,7 +2,7 @@
 
     include_once('product.php');
 
-    $prodgroupname = $_GET['ProdGroupName'];  //Get the Product Group Selected
+    $prodGroupId = $_GET['ProductGroupId'];  //Get the Product Group Selected
 
     require("settings.php");
     $conn = mysqli_connect($host, $user, $pwd, $sql_db);
@@ -11,14 +11,17 @@
     {
         return false;
     }
-    $query = "SELECT Product.Name FROM Product INNER JOIN ProductGroup on Product.ProductGroupId = ProductGroup.Id WHERE ProductGroup.Name = '$prodgroupname'";
+    $query = "SELECT * FROM Product WHERE ProductGroupId = $prodGroupId";
+
     $result = mysqli_query($conn, $query);
 
-    $prodgroupid = mysqli_fetch_field($result);
+    $products = array();
+    while($r = mysqli_fetch_array($result)) {
+        $products[] = Product::getProductFromDBRow($r);
+    }
+
+    echo json_encode($products);
 
     mysqli_free_result($result);
     mysqli_close($conn);
-
-    $newProduct = new Product($prodgroupid);
-    $newProduct->GetData($query);
 ?>

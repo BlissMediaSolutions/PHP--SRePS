@@ -14,13 +14,13 @@
     	<div class="col-sm-6 formColumn">
     		<div class="form-group">
 			    <label for="pGroup">Product Group:</label>
-			    <select class="form-control" id="pGroup" ng-model="productGroup" ng-options="group for group in productGroups" ng-change="groupSelect(productGroup)"></select>
+			    <select class="form-control" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)"></select>
 			</div>
 		<!-- OUTPUT VIEW -->
 			<div class="form-group" ng-show="gSelected">
 			    <!--  -->
 			    <label for="product">Product:</label>
-			    <select class="form-control" id="product" ng-model="product" ng-options="product.Name for product in products"></select>
+			    <select class="form-control" id="product" ng-model="product" ng-options="product.name for product in products"></select>
 			    <label for="qty">Quantity:</label>
 			    <input type="text" class="form-control" id="qty" ng-model="qty" pattern="^[0-9]*$">
 			    <button type="button" class="btn btn-default btn-lg" ng-click="createSaleItem(product, qty)">Add</button>

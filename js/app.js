@@ -19,7 +19,14 @@ app.controller('SalesController', function($scope, $http) {
     $scope.addSelected = true; // Used for setting the side tab.
     
     // JavaScript + Angular
-    $scope.productGroups = ['Painkillers', 'Vitamins', 'Topical']; //Add product group strings here
+    //Product groups hardcoded for now, later replace with call to back-end
+    $scope.productGroups = [
+        {'Id':1, 'Name':'Painkillers'},
+        {'Id':2, 'Name':'Prescription drugs'},
+        {'Id':3, 'Name':'Vitamins'},
+        {'Id':4, 'Name':'Fragrances'},
+        {'Id':5, 'Name':'Weight loss'},
+        {'Id':6, 'Name':'Dental care'}];
     $scope.gSelected = false; // Initialise whether a group has been selected to false.
     $scope.gSelection; // Var for the group selection.
 
@@ -33,11 +40,11 @@ app.controller('SalesController', function($scope, $http) {
         $scope.currentPage = 1;
     }
 
-    $scope.populateProducts = function ($groupName) {
+    $scope.populateProducts = function ($groupId) {
         $http({
             url: '/php/GetProductGroup.php',
             method: 'GET',
-            params: {'ProdGroupName' : $groupName}
+            params: {'ProductGroupId' : $groupId}
         })
         .then(function successCallback(response){
             $scope.products = response.data;
@@ -57,7 +64,7 @@ app.controller('SalesController', function($scope, $http) {
     }
 
     $scope.createSaleItem = function(product, qty) { // add sale item to array.
-        $scope.sale = {name:product.name,qty:qty,cost:parseInt(product.cost)*parseInt(qty)};
+        $scope.sale = {name:product.name,qty:qty,cost:parseFloat(product.price)*parseFloat(qty)};
         $scope.itemArray.push($scope.sale);
     }
 

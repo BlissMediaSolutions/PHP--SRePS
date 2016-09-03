@@ -17,6 +17,7 @@
     		<file>tests/SaleLineTest.php</file>
     		<file>tests/DatabaseTestBase.php</file>
     		<file>tests/DatabaseConstraintTest.php</file>
+            <file>tests/ProductDBTest.php</file>
     		</testsuite>
 	</testsuites>
 
