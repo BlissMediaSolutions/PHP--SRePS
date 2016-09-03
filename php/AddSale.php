@@ -2,6 +2,7 @@
 
     include_once('saleline.php');
     include_once('sale.php');
+    include_once('product.php');
 
     //Get data that was POSTed
     $param = file_get_contents("php://input");
@@ -40,12 +41,9 @@
         }
         mysqli_close($conn);
 
-        // Create a new Product
         $thisProduct = new Product($result);
         
         //Update the Product table Qty's for the new Sale.
         $thisProduct->UpdateProductData($prodid, $qty);
-
-
     }
 ?>
