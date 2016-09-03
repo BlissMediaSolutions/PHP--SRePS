@@ -21,14 +21,30 @@
 
     //Insert them into the database
     foreach ($saleLines as $saleLine){
-        $saleLine->addNewSaleLine();
+          $saleLine->addNewSaleLine();
 
         //Get the Product ID & create a new product
-        //$prodid = $saleLine->getProductId();
-        //$qty = $saleLine->getQuantity();
+        $prodid = $saleLine->getProductId();
+        $qty = $saleLine->getQuantity();
 
-        //$thisProduct = new Product($prodid);
-        //$thisProduct->UpdateProductData($prodid, $qty);
+        // Get the Product Group ID for the relevant Product
+        require("settings.php");
+        $query = "SELECT ProductGroupId FROM Product WHERE Id = $prodid";
+        $conn = mysqli_connect($host, $user, $pwd, $sql_db);
+        if (!$conn)
+        {
+            return false;
+        } else {
+            $result = mysql_query($conn, $query);
+            //return $result;
+        }
+        mysqli_close($conn);
+
+        // Create a new Product
+        $thisProduct = new Product($result);
+        
+        //Update the Product table Qty's for the new Sale.
+        $thisProduct->UpdateProductData($prodid, $qty);
 
 
     }
