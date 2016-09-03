@@ -1,23 +1,23 @@
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
-        templateUrl: "templates/home.html"
+        templateUrl: "./templates/home.html"
     }).when("/sales", {
         controller: 'SalesController',
-        templateUrl: "templates/sales.html"
+        templateUrl: "./templates/sales.html"
     }).when("/products", {
-        templateUrl: "templates/products.html"
+        templateUrl: "./templates/products.html"
     }).when("/reports", {
-        templateUrl: "templates/reports.html"
+        templateUrl: "./templates/reports.html"
     }).when("/faq", {
-        templateUrl: "templates/faq.html"
+        templateUrl: "./templates/faq.html"
     })
 });
 
 app.controller('SalesController', function($scope, $http) {
     // CSS Controlls
     $scope.addSelected = true; // Used for setting the side tab.
-    
+
     // JavaScript + Angular
     //Product groups hardcoded for now, later replace with call to back-end
     $scope.productGroups = [
@@ -33,7 +33,7 @@ app.controller('SalesController', function($scope, $http) {
     $scope.products; // Array to fill with PHP. (using hardcoded data for now.)
 
     $scope.item; // Object for individual sale items.
-    $scope.itemArray = []; // Array of sale items. 
+    $scope.itemArray = []; // Array of sale items.
     $scope.totalPrice = 0.0;
     var salesController = this;
 
@@ -44,7 +44,7 @@ app.controller('SalesController', function($scope, $http) {
 
     $scope.populateProducts = function ($groupId) {
         $http({
-            url: '/php/GetProductGroup.php',
+            url: './php/GetProductGroup.php',
             method: 'GET',
             params: {'ProductGroupId' : $groupId}
         })
@@ -100,7 +100,7 @@ app.controller('SalesController', function($scope, $http) {
 
     $scope.commitSale = function(){
         $http({
-            url: '/php/AddSale.php',
+            url: './php/AddSale.php',
             method: 'POST',
             data: $scope.itemArray
         })
