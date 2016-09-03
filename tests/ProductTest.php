@@ -7,7 +7,7 @@ class ProductTest extends PHPUnit_Framework_TestCase
 	{
 		//Testing Constructor with 1 Paramter
 		$thisProduct = new Product('03');
-		$this->assertEquals('03', $thisProduct->getID());
+		$this->assertEquals('03', $thisProduct->getProdGroupID());
 
 		//Testing Constructor with 8 Paramter
 		$newProduct = new Product('01', '02', 'Lipitor 20mg Tablets 30', '9.99', '25', '5', '50', '0');
@@ -61,7 +61,7 @@ class ProductTest extends PHPUnit_Framework_TestCase
 				'"quantitySold":"5",'.
 				'"quantityToOrder":"50",'.
 				'"quantityRequested":"0"'.
-				'}',
+				'}', 
 			json_encode($newProduct));
 	}
 }

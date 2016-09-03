@@ -32,16 +32,12 @@ class Product extends dbase implements JsonSerializable
       	}
 	}
 
-	//public function __construct1 ($prodgroupid) {
-	//	$this->prodgroupid = $prodgroupid;
-	//}
-  public function __construct1 ($id)
-  {
-      $this->id = $id;
-  }
+	/* Class Constructor with 1 argument   */
+	public function __construct1 ($prodgroupid) {
+		$this->prodgroupid = $prodgroupid;
+	}
 
-
-	/*Class Constructor with 8 arguments*/
+	/*Class Constructor with 8 arguments  */
 	public function __construct8 ($id, $prodgroupid, $name, $price, $qtyOnHand, $qtySold, $qtyToOrder, $qtyRequested)
 	{
 		$this->id = $id;
@@ -132,7 +128,7 @@ class Product extends dbase implements JsonSerializable
         return $result;
   	}
 
-    //function to Update the qtyOnHand & QtySold numbers after a sale.
+  	  //function to Update the qtyOnHand & QtySold numbers after a sale.
     function UpdateProductData($id, $qty){
         $sqltable = "Product";
         $query = "UPDATE $sqltable SET QuantityOnHand = QuantityOnHand - $qty WHERE ID = $id";
