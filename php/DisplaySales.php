@@ -12,7 +12,7 @@
      If ($param = "All")
      {
         $allSale = new Sale('1');
-        $sqlstring = "SELECT Sale.ID, Sale.SaleDateTime, SUM(SaleLine.Quantity) AS TotalItems FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId GROUP BY Sale.ID";
+        $sqlstring = "SELECT Sale.ID, Sale.SaleDateTime, SUM(SaleLine.Quantity) AS TotalItems, SUM(Product.Price * Product.QuantitySold) AS TotalValue FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId JOIN Product ON SaleLine.ProductId = Product.Id GROUP BY Sale.ID";
         $allSale->GetData($sqlstring);
         $allSale = null;
      } elseif ($param = "Weekly")
