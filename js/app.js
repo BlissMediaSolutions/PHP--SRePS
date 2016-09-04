@@ -14,12 +14,19 @@ app.config(function ($routeProvider) {
     })
 });
 
-app.controller('SalesController', function($scope) {
+app.controller('SalesController', function($scope, $http) {
     // CSS Controlls
     $scope.addSelected = true; // Used for setting the side tab.
     
     // JavaScript + Angular
-    $scope.productGroups = ['Painkillers', 'Vitamins', 'Topical']; //Add product group strings here
+    //Product groups hardcoded for now, later replace with call to back-end
+    $scope.productGroups = [
+        {'Id':1, 'Name':'Painkillers'},
+        {'Id':2, 'Name':'Prescription drugs'},
+        {'Id':3, 'Name':'Vitamins'},
+        {'Id':4, 'Name':'Fragrances'},
+        {'Id':5, 'Name':'Weight loss'},
+        {'Id':6, 'Name':'Dental care'}];
     $scope.gSelected = false; // Initialise whether a group has been selected to false.
     $scope.gSelection; // Var for the group selection.
 
@@ -27,32 +34,26 @@ app.controller('SalesController', function($scope) {
 
     $scope.item; // Object for individual sale items.
     $scope.itemArray = []; // Array of sale items. 
+    $scope.totalPrice = 0.0;
+    var salesController = this;
 
     $scope.readyPage = function () {
         $scope.pageSize = 5;
         $scope.currentPage = 1;
     }
 
-    $scope.populateProducts = function (group) { // Replace with PHP call.
-        if (group == "Painkillers") {
-            $scope.products = [
-                {name:'Panadol', price:'15'},
-                {name:'Neurofen', price:'12'},
-                {name:'Voltaren', price:'25'}
-            ];
-        } else if (group == "Vitamins") {
-            $scope.products = [
-                {name:'Vitamin C', price:'15'},
-                {name:'Iron', price:'12'},
-                {name:'Zinc', price:'25'}
-            ];
-        } else if (group == "Topical") {
-            $scope.products = [
-                {name:'Aloe Vera Spray', price:'15'},
-                {name:'Vitamin E Cream', price:'12'},
-                {name:'Deep Heat', price:'25'}
-            ];
-        }
+    $scope.populateProducts = function ($groupId) {
+        $http({
+            url: '/php/GetProductGroup.php',
+            method: 'GET',
+            params: {'ProductGroupId' : $groupId}
+        })
+        .then(function successCallback(response){
+            $scope.products = response.data;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.products = null;
+        });
     }
 
     $scope.groupSelect= function(group){ // used to get selected group.
@@ -65,8 +66,14 @@ app.controller('SalesController', function($scope) {
     }
 
     $scope.createSaleItem = function(product, qty) { // add sale item to array.
-        $scope.sale = {name:product.name,qty:qty,cost:parseInt(product.cost)*parseInt(qty)};
+        $scope.sale = {
+            productId:product.id,
+            name:product.name,
+            qty:qty,
+            cost:parseFloat(product.price)*parseFloat(qty)
+        };
         $scope.itemArray.push($scope.sale);
+        salesController.updateTotalPrice();
     }
 
     $scope.maxPage = function () {
@@ -84,6 +91,33 @@ app.controller('SalesController', function($scope) {
         if ($scope.currentPage !== 1) {
             $scope.currentPage = $scope.currentPage - 1;
         }
+    };
+
+    $scope.cancelSale = function() {
+        $scope.itemArray = [];
+        $scope.totalPrice = 0.0;
+    };
+
+    $scope.commitSale = function(){
+        $http({
+            url: '/php/AddSale.php',
+            method: 'POST',
+            data: $scope.itemArray
+        })
+        .then(function successCallback(response){
+            $scope.itemArray = [];
+            $scope.totalPrice = 0.0;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+        });
+    };
+
+    this.updateTotalPrice = function() {
+        var price = 0;
+        for (var i = 0; i < $scope.itemArray.length; i++){
+            price += $scope.itemArray[i].cost;
+        }
+        $scope.totalPrice = price;
     };
 
     $scope.readyPage();
