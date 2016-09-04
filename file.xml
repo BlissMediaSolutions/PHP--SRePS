@@ -122,19 +122,19 @@
 	</row>
 	<row>
 		<field name="Id">10</field>
-		<field name="ProductGroupId" xsi:nil="true" />
-		<field name="Name">Blackmores Odourless Fish Oil 1000mg Bulk Pack 500 Capsules</field>
-		<field name="Price">38.20</field>
-		<field name="QuantityOnHand">7</field>
+		<field name="ProductGroupId">4</field>
+		<field name="Name">Marc Jacobs Daisy Eau de Toilette 100ml Spray</field>
+		<field name="Price">65.20</field>
+		<field name="QuantityOnHand">10</field>
 		<field name="QuantitySold">0</field>
 		<field name="QuantityToOrder">0</field>
 		<field name="QuantityRequested">0</field>
 	</row>
 	<row>
 		<field name="Id">11</field>
-		<field name="ProductGroupId" xsi:nil="true" />
-		<field name="Name">Ansell Glove Hany Disposable 24</field>
-		<field name="Price">3.99</field>
+		<field name="ProductGroupId">4</field>
+		<field name="Name">Calvin Klein CK One 200ml Eau de Toilette Spray</field>
+		<field name="Price">37.99</field>
 		<field name="QuantityOnHand">21</field>
 		<field name="QuantitySold">0</field>
 		<field name="QuantityToOrder">0</field>
@@ -142,10 +142,40 @@
 	</row>
 	<row>
 		<field name="Id">12</field>
-		<field name="ProductGroupId" xsi:nil="true" />
-		<field name="Name">Morning Fresh Dishwashing Liquid Lemon 400ml</field>
-		<field name="Price">1.50</field>
-		<field name="QuantityOnHand">20</field>
+		<field name="ProductGroupId">5</field>
+		<field name="Name">OptiSlim VLCD Bar Choc Fudge 5 Pack</field>
+		<field name="Price">15.50</field>
+		<field name="QuantityOnHand">35</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">13</field>
+		<field name="ProductGroupId">5</field>
+		<field name="Name">Optislim VLCD Bars Variety 60g 15 Pack</field>
+		<field name="Price">15.50</field>
+		<field name="QuantityOnHand">45</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">14</field>
+		<field name="ProductGroupId">6</field>
+		<field name="Name">Colgate Toothpaste Regular Flavour 250g</field>
+		<field name="Price">3.20</field>
+		<field name="QuantityOnHand">40</field>
+		<field name="QuantitySold">0</field>
+		<field name="QuantityToOrder">0</field>
+		<field name="QuantityRequested">0</field>
+	</row>
+	<row>
+		<field name="Id">15</field>
+		<field name="ProductGroupId">6</field>
+		<field name="Name">Colgate Toothpaste Total 190g</field>
+		<field name="Price">5.55</field>
+		<field name="QuantityOnHand">50</field>
 		<field name="QuantitySold">0</field>
 		<field name="QuantityToOrder">0</field>
 		<field name="QuantityRequested">0</field>
@@ -160,23 +190,23 @@ BEGIN
 	DECLARE msg varchar(128);
 	IF NEW.Price < 0 THEN
 		set msg = concat('TRIG_Product_Insert_Checks Error:',
-			'Trying to insert a negative value into Product.Price: ', 
+			'Trying to insert a negative value into Product.Price: ',
             cast(NEW.Price as char));
 	ELSEIF NEW.QuantityOnHand < 0 THEN
 		set msg = concat('TRIG_Product_Insert_Checks Error:',
-			'Trying to insert a negative value into Product.QuantityOnHand: ', 
+			'Trying to insert a negative value into Product.QuantityOnHand: ',
             cast(NEW.QuantityOnHand as char));
 	ELSEIF NEW.QuantitySold < 0 THEN
 		set msg = concat('TRIG_Product_Insert_Checks Error:',
-			'Trying to insert a negative value into Product.QuantitySold: ', 
+			'Trying to insert a negative value into Product.QuantitySold: ',
             cast(NEW.QuantitySold as char));
 	ELSEIF NEW.QuantityToOrder < 0 THEN
 		set msg = concat('TRIG_Product_Insert_Checks Error:',
-			'Trying to insert a negative value into Product.QuantityToOrder: ', 
+			'Trying to insert a negative value into Product.QuantityToOrder: ',
             cast(NEW.QuantityToOrder as char));
 	ELSEIF NEW.QuantityRequested < 0 THEN
 		set msg = concat('TRIG_Product_Insert_Checks Error:',
-			'Trying to insert a negative value into Product.QuantityRequested: ', 
+			'Trying to insert a negative value into Product.QuantityRequested: ',
             cast(NEW.QuantityRequested as char));
 	END IF;
     IF msg IS NOT NULL THEN
@@ -193,23 +223,23 @@ BEGIN
 	DECLARE msg varchar(128);
 	IF NEW.Price < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
-			'Trying to update a negative value in Product.Price: ', 
-            cast(new.QuantityOnHand as char));
+			'Trying to update a negative value in Product.Price: ',
+            cast(new.Price as char));
 	ELSEIF NEW.QuantityOnHand < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
-			'Trying to update a negative value in Product.QuantityOnHand: ', 
+			'Trying to update a negative value in Product.QuantityOnHand: ',
             cast(new.QuantityOnHand as char));
 	ELSEIF NEW.QuantitySold < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
-			'Trying to update a negative value in Product.QuantitySold: ', 
+			'Trying to update a negative value in Product.QuantitySold: ',
             cast(new.QuantitySold as char));
 	ELSEIF NEW.QuantityToOrder < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
-			'Trying to update a negative value in Product.QuantityToOrder: ', 
+			'Trying to update a negative value in Product.QuantityToOrder: ',
             cast(new.QuantityToOrder as char));
 	ELSEIF NEW.QuantityRequested < 0 THEN
 		set msg = concat('TRIG_Product_Update_Checks Error:',
-			'Trying to update a negative value in Product.QuantityRequested: ', 
+			'Trying to update a negative value in Product.QuantityRequested: ',
             cast(new.QuantityRequested as char));
 	END IF;
     IF msg IS NOT NULL THEN
@@ -232,7 +262,7 @@ BEGIN
 	DECLARE msg varchar(128);
 	IF NEW.Quantity < 1 THEN
 		set msg = concat('TRIG_SaleLine_Insert_Checks Error:',
-			'Trying to insert a non-positive value into SaleLine.Quantity: ', 
+			'Trying to insert a non-positive value into SaleLine.Quantity: ',
             cast(NEW.Quantity as char));
 	END IF;
     IF msg IS NOT NULL THEN
@@ -249,7 +279,7 @@ BEGIN
 	DECLARE msg varchar(128);
 	IF NEW.Quantity < 1 THEN
 		set msg = concat('TRIG_SaleLine_Update_Checks Error:',
-			'Trying to update a non-positive value in SaleLine.Quantity: ', 
+			'Trying to update a non-positive value in SaleLine.Quantity: ',
             cast(NEW.Quantity as char));
 	END IF;
     IF msg IS NOT NULL THEN

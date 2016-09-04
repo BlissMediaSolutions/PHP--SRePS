@@ -8,7 +8,6 @@
     	<!-- impliment second set for xs devices -->
     		<div class="row"><p class="sideTab" ng-class="{'selected':addSelected}">Add</p></div>
     		<div class="row"><p class="sideTab" ng-class="{'selected':editSelected}">Edit</p></div>
-    		<div class="row"><p class="sideTab" ng-class="{'selected':removeSelected}">Remove</p></div>
     	</div>
     	<!-- INPUT FORM -->
     	<div class="col-sm-6 formColumn">
@@ -38,13 +37,15 @@
                                 <th id="itemName">Name</th>
                                 <th id="itemQty">Quantity</th>
                                 <th id="itemCost">Cost</th>
+                                <th id="deleteItem"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr data-ng-repeat="item in itemArray | startFrom: (currentPage - 1) * pageSize | limitTo: pageSize">
                                 <td headers="itemName">{{item.name}}</td>
                                 <td headers="itemQty">{{item.qty}}</td>
-                                <td headers="itemCost">{{item.cost}}</td>
+                                <td headers="itemCost">{{item.cost | currency:"$"}}</td>
+                                <td headers="deleteItem" class="btn" ng-click="deleteItem(itemArray.indexOf(item))">X</td>
                             </tr>
                         </tbody>
                     </table>
@@ -56,7 +57,7 @@
                 </div>
     		</div>
     		<div>
-    			<h2>Total: ${{totalPrice}}</h2>
+    			<h2>Total: {{totalPrice | currency:"$"}}</h2>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-lg" ng-click="commitSale()">Done</button>
                     <button type="button" class="btn btn-default btn-lg" ng-click="cancelSale()">Cancel</button>

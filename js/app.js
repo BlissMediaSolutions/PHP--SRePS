@@ -5,6 +5,9 @@ app.config(function ($routeProvider) {
     }).when("/sales", {
         controller: 'SalesController',
         templateUrl: "./templates/sales.html"
+    }).when("/sales/:saleId", {
+        controller: 'SalesController',
+        templateUrl: "./templates/sales.html"
     }).when("/products", {
         templateUrl: "./templates/products.html"
     }).when("/reports", {
@@ -14,7 +17,7 @@ app.config(function ($routeProvider) {
     })
 });
 
-app.controller('SalesController', function($scope, $http) {
+app.controller('SalesController', function($scope, $http, $routeParams, $location) {
     // CSS Controlls
     $scope.addSelected = true; // Used for setting the side tab.
 
@@ -35,11 +38,18 @@ app.controller('SalesController', function($scope, $http) {
     $scope.item; // Object for individual sale items.
     $scope.itemArray = []; // Array of sale items.
     $scope.totalPrice = 0.0;
+    $scope.saleId = 0;
     var salesController = this;
 
     $scope.readyPage = function () {
         $scope.pageSize = 5;
         $scope.currentPage = 1;
+        if ($routeParams.saleId != null){
+            $scope.saleId = $routeParams.saleId;
+            $scope.addSelected = false;
+            $scope.editSelected = true;
+            salesController.loadSale();
+        }
     }
 
     $scope.populateProducts = function ($groupId) {
@@ -67,6 +77,7 @@ app.controller('SalesController', function($scope, $http) {
 
     $scope.createSaleItem = function(product, qty) { // add sale item to array.
         $scope.sale = {
+            id:0, //signals this is a new item
             productId:product.id,
             name:product.name,
             qty:qty,
@@ -99,25 +110,50 @@ app.controller('SalesController', function($scope, $http) {
     };
 
     $scope.commitSale = function(){
+        var data = {"saleId": $scope.saleId, "items" : $scope.itemArray};
         $http({
-            url: './php/AddSale.php',
+            url: './php/AddEditSale.php',
             method: 'POST',
-            data: $scope.itemArray
+            data: data
         })
         .then(function successCallback(response){
             $scope.itemArray = [];
             $scope.totalPrice = 0.0;
+            $location.path('/sales');
         }, function errorCallback(response){
             //Ooops! figure out what to do here...
         });
     };
 
+    //Remove an item from our Items array, and update the total price
+    $scope.deleteItem = function(itemIndex){
+        $scope.itemArray.splice(itemIndex, 1);
+        salesController.updateTotalPrice();
+    }
+
+    //Calculate the total price based on the items
     this.updateTotalPrice = function() {
         var price = 0;
         for (var i = 0; i < $scope.itemArray.length; i++){
             price += $scope.itemArray[i].cost;
         }
         $scope.totalPrice = price;
+    };
+
+    //Load details of an existing sale from the back-end
+    this.loadSale = function(){
+        $http({
+            url: './php/GetSale.php',
+            method: 'GET',
+            params: {'SaleId' : $scope.saleId}
+        })
+        .then(function successCallback(response){
+            $scope.itemArray = response.data;
+            salesController.updateTotalPrice();
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.itemArray = [];
+        });
     };
 
     $scope.readyPage();

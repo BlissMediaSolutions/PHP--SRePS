@@ -129,12 +129,13 @@ class Product extends dbase implements JsonSerializable
   	}
 
   	  //function to Update the qtyOnHand & QtySold numbers after a sale.
-    function UpdateProductData($id, $qty){
+    function updateProductData($qtyChange){
         $sqltable = "Product";
-        $query = "UPDATE $sqltable SET QuantityOnHand = QuantityOnHand - $qty WHERE ID = $id";
-        $result = $this->WriteDelDbase($sqltable, $query);
-
-        $query = "UPDATE $sqltable SET QuantitySold = (SELECT SUM(QuantitySold) + $qty) WHERE ID = $id";
+        $query = "UPDATE $sqltable SET ".
+        	"QuantityOnHand = QuantityOnHand - $qtyChange, ".
+        	"QuantitySold = QuantitySold + $qtyChange ".
+        	"WHERE ID = $this->id";
+        
         $result = $this->WriteDelDbase($sqltable, $query);
     }
 
