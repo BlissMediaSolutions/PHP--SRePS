@@ -12,7 +12,27 @@
       private $customerId;
       private $saleDateTime;
 
-      /*Class Constructor */
+			/* Main Class Constructor 					*/
+			/* Note: as PHP doesnt allow overloading constructors this hack/woraround was used to overload the constructor */
+			public function __construct ()
+			{
+				$get_arguments       = func_get_args();
+		      	$number_of_arguments = func_num_args();
+		        // call a constructor in the format of __constructX, where X is the number of agruments.
+		      	if (method_exists($this, $method_name = '__construct'.$number_of_arguments)){
+		      		call_user_func_array(array($this, $method_name), $get_arguments);
+		      	} else {
+		        	error_log("Undefined function: " . '__construct' . $number_of_arguments . '  in class: ' . get_class($this), 0);
+		      	}
+			}
+
+			/* Class Constructor with 1 argument */
+			public function __construct ($id)
+			{
+					$this->id = $id;
+			}
+
+      /*Class Constructor with 3 arguments  */
 			public function __construct ($id, $customerId, $saleDateTime)
 			{
 					$this->id = $id;
@@ -60,6 +80,8 @@
         $this->id = $insertId;
         return $result;
       }
+
+			//function getSalesData($sqlstring)
 	}
 
 
