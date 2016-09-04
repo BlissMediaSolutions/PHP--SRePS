@@ -139,6 +139,8 @@ app.controller('ReportController', function($scope, $http) {
     // Set report shown to 'null'
     $scope.reportToShow = 0
 
+    $scope.hideTable = true;
+
     // Set up sales array for population.
     $scope.salesArray = []; 
 
@@ -147,7 +149,9 @@ app.controller('ReportController', function($scope, $http) {
 
     $scope.populateSalesArray = function (report) {
         // Replace each 'if' code with PHP call.
-        // Or pass the string passed in to the php call (I think this was the way it was supposed to work, at least.)
+        // Or pass the string passed in to the php call 
+        // (I think this was the way it was supposed to work, at least?)
+        // Can pass the $scope.date variable to the call.
         if (report == 'weekly') {
             $scope.salesArray = [
             {'CustomerID':25,'Product':'Panadol','Cost':12},
@@ -176,6 +180,7 @@ app.controller('ReportController', function($scope, $http) {
         $scope.selectHidden = false;
         // Set report shown to 'null'
         $scope.reportToShow = 0;
+        $scope.hideTable = true;
         $scope.destroySalesArray();
     }
 
