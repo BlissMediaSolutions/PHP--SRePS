@@ -4,6 +4,7 @@
    version: 1.0           */
 
 	include_once('dbase.php');
+  include_once('saleline.php');
 
 	class Sale extends dbase
 	{
@@ -81,10 +82,28 @@
         return $result;
       }
 
-			//function getSalesData($sqlstring)
+			function deleteSale($conn){
+        $sqltable = "Sale";
+
+        //Get all corresponding salelines
+        $query = "SELECT Id, ProductId, SaleId, Quantity ".
+                  "FROM SaleLine ".
+                  "WHERE SaleId = $this->id";
+        $result = mysqli_query($conn, $query);
+
+        $saleLines = array();
+        while($r = mysqli_fetch_array($result)){
+            $saleLines[] = SaleLine::getSaleLineFromDBRow($r);
+        }
+
+        //Delete all salelines
+        foreach($saleLines as $saleLine){
+            $saleLine->deleteSaleLine($conn);
+        }
+
+        //Delete the sale
+        $query = "DELETE FROM $sqltable WHERE Id = $this->id";
+        $this->WriteDelDbase($sqltable, $query);
+      }
 	}
-
-
-
-
 ?>
