@@ -108,6 +108,7 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
     $scope.cancelSale = function() {
         $scope.itemArray = [];
         $scope.totalPrice = 0.0;
+        $location.path('/sales');
     };
 
     $scope.commitSale = function(){
@@ -167,9 +168,9 @@ app.filter('startFrom', function () {
 });
 
 app.controller('ReportController', function($scope, $http) {
-    WEEKLY = "weekly";
-    MONTHLY = "monthly";
-    ALL = "all"
+    WEEKLY = "Weekly";
+    MONTHLY = "Monthly";
+    ALL = "All"
     // Show select screen.
     $scope.selectHidden = false;
     // Set report shown to 'null'
@@ -183,28 +184,40 @@ app.controller('ReportController', function($scope, $http) {
     // Date for naming CSV reports.
     $scope.date = new Date();
 
-    $scope.populateSalesArray = function (report) {
-        // Replace each 'if' code with PHP call.
-        // Or pass the string passed in to the php call 
-        // (I think this was the way it was supposed to work, at least?)
-        // Can pass the $scope.date variable to the call.
-        if (report == 'weekly') {
-            $scope.salesArray = [
-            {'CustomerID':25,'Product':'Panadol','Cost':12},
-            {'CustomerID':25,'Product':'Neurofen','Cost':18}];
-        } else if (report == 'monthly') {
-            $scope.salesArray = [
-            {'CustomerID':25,'Product':'Panadol','Cost':12},
-            {'CustomerID':25,'Product':'Neurofen','Cost':18},
-            {'CustomerID':33,'Product':'Cold n flu','Cost':25}];
-        } else if (report == 'all') {
-            $scope.salesArray = [
-            {'CustomerID':25,'Product':'Panadol','Cost':12},
-            {'CustomerID':25,'Product':'Neurofen','Cost':18},
-            {'CustomerID':33,'Product':'Cold n flu','Cost':25},
-            {'CustomerID':72,'Product':'Sambucol','Cost':15},
-            {'CustomerID':12,'Product':'Voltaren','Cost':30}];
-        }
+    $scope.populateSalesArray = function (reportType) {
+        var selectedDate = $scope.date == null ? null : $scope.date.toISOString();
+        $http({
+            url: './php/DisplaySales.php',
+            method: 'GET',
+            params: {'ReportType' : reportType,
+                     'StartDate'  : selectedDate}
+        })
+        .then(function successCallback(response){
+            $scope.salesArray = response.data;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.itemArray = [];
+        });
+    }
+
+    //Remove a sale both from the database and the display
+    $scope.deleteSale = function(saleId){
+        $http({
+            url: './php/DeleteSale.php',
+            method: 'GET',
+            params: {'SaleId' : saleId}
+        })
+        .then(function successCallback(response){
+            //Item has been deleted from the database. Stop displaying it.
+            for (var i = 0; i < $scope.salesArray.length; i++){
+                if ($scope.salesArray[i].ID == saleId){
+                    $scope.salesArray.splice(i, 1);
+                    break;
+                }
+            }
+        }, function errorCallback(response){
+            //Oops! Figure out what to do here...
+        });
     }
 
     $scope.destroySalesArray = function () {
@@ -226,22 +239,29 @@ app.controller('ReportController', function($scope, $http) {
 
     $scope.showWeekly = function() {
         $scope.hideSelect();
-        $scope.populateSalesArray(WEEKLY);
+        //$scope.populateSalesArray(WEEKLY);
         $scope.reportToShow = 1;
-        // PHP call/ function for call goes here.
     }
 
     $scope.showMonthly = function() {
         $scope.hideSelect();
-        $scope.populateSalesArray(MONTHLY);
+        //$scope.populateSalesArray(MONTHLY);
         $scope.reportToShow = 2;
-        // PHP call/ function for call goes here.
     }
 
     $scope.showAll = function() {
         $scope.hideSelect();
         $scope.populateSalesArray(ALL);
         $scope.reportToShow = 3;
-        // PHP call/ function for call goes here.
-    }    
+    }
+
+    $scope.getWeeklySales = function(){
+        $scope.populateSalesArray(WEEKLY);
+        $scope.hideTable = false;
+    }
+
+    $scope.getMonthlySales = function(){
+        $scope.populateSalesArray(MONTHLY);
+        $scope.hideTable = false;
+    }
 });
