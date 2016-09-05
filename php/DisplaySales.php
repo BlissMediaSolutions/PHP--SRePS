@@ -8,26 +8,34 @@
 
      //Get data that was POSTed
      $param = file_get_contents("php://input");
+     $startdate;
 
      If ($param = "All")
      {
         $allSale = new Sale('1');
         $sqlstring = "SELECT Sale.ID, Sale.SaleDateTime, SUM(SaleLine.Quantity) AS TotalItems, SUM(Product.Price * Product.QuantitySold) AS TotalValue FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId JOIN Product ON SaleLine.ProductId = Product.Id GROUP BY Sale.ID";
         $allSale->GetData($sqlstring);
-        $allSale = null;
+        echo json_encode($allSale);
      } elseif ($param = "Weekly")
      {
-        $allSale = new Sale('1');
-        $sqlstring = "SELECT Sale.ID, Sale.SaleDateTime, SUM(SaleLine.Quantity) AS TotalItems JOIN SaleLine ON Sale.ID = SaleLine.SaleId
-          Where Sale.SaleDateTime = '2016-09-03' and Sale.SaleDateTime +7 GROUP BY Sale.ID";
+       $enddate = new DateTime($startdate);
+       $enddate->modify('+1 week');
+       $allSale = new Sale('1');
+       $sqlstring = "SELECT Sale.ID, Sale.SaleDateTime, SUM(SaleLine.Quantity) AS TotalItems, SUM(Product.Price * Product.QuantitySold) AS TotalValue
+          FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId JOIN Product ON SaleLine.ProductId = Product.Id
+          WHERE Sale.SaleDateTime BETWEEN $startdate AND $enddate GROUP BY Sale.ID";
         $allSale->GetData($sqlstring);
-        $allSale = null;
+        echo json_encode($allSale);
      } elseif ($parm = "Monthly")
      {
-        $allSale = new Sale('1');
-        Sqlstring = "";
+       $enddate = new DateTime($startdate);
+       $enddate->modify('+1 month');
+       $allSale = new Sale('1');
+       $sqlstring = "SELECT Sale.ID, Sale.SaleDateTime, SUM(SaleLine.Quantity) AS TotalItems, SUM(Product.Price * Product.QuantitySold) AS TotalValue
+          FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId JOIN Product ON SaleLine.ProductId = Product.Id
+          WHERE Sale.SaleDateTime BETWEEN $startdate AND $enddate GROUP BY Sale.ID";
         $allSale->GetData($sqlstring);
-        $allSale = null;
+        echo json_encode($allSale);
      }
 
 ?>
