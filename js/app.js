@@ -1,4 +1,4 @@
-var app = angular.module("myApp", ["ngRoute"]);
+var app = angular.module("myApp", ["ngRoute", "ngAnimate", "ngCsv"]);
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
         templateUrl: "./templates/home.html"
@@ -11,6 +11,7 @@ app.config(function ($routeProvider) {
     }).when("/products", {
         templateUrl: "./templates/products.html"
     }).when("/reports", {
+        controller: 'ReportController',
         templateUrl: "./templates/reports.html"
     }).when("/faq", {
         templateUrl: "./templates/faq.html"
@@ -163,4 +164,84 @@ app.filter('startFrom', function () {
     return function (data, start) {
         return data.slice(start);
     };
+});
+
+app.controller('ReportController', function($scope, $http) {
+    WEEKLY = "weekly";
+    MONTHLY = "monthly";
+    ALL = "all"
+    // Show select screen.
+    $scope.selectHidden = false;
+    // Set report shown to 'null'
+    $scope.reportToShow = 0
+
+    $scope.hideTable = true;
+
+    // Set up sales array for population.
+    $scope.salesArray = []; 
+
+    // Date for naming CSV reports.
+    $scope.date = new Date();
+
+    $scope.populateSalesArray = function (report) {
+        // Replace each 'if' code with PHP call.
+        // Or pass the string passed in to the php call 
+        // (I think this was the way it was supposed to work, at least?)
+        // Can pass the $scope.date variable to the call.
+        if (report == 'weekly') {
+            $scope.salesArray = [
+            {'CustomerID':25,'Product':'Panadol','Cost':12},
+            {'CustomerID':25,'Product':'Neurofen','Cost':18}];
+        } else if (report == 'monthly') {
+            $scope.salesArray = [
+            {'CustomerID':25,'Product':'Panadol','Cost':12},
+            {'CustomerID':25,'Product':'Neurofen','Cost':18},
+            {'CustomerID':33,'Product':'Cold n flu','Cost':25}];
+        } else if (report == 'all') {
+            $scope.salesArray = [
+            {'CustomerID':25,'Product':'Panadol','Cost':12},
+            {'CustomerID':25,'Product':'Neurofen','Cost':18},
+            {'CustomerID':33,'Product':'Cold n flu','Cost':25},
+            {'CustomerID':72,'Product':'Sambucol','Cost':15},
+            {'CustomerID':12,'Product':'Voltaren','Cost':30}];
+        }
+    }
+
+    $scope.destroySalesArray = function () {
+        $scope.salesArray = [];
+    }
+    
+    $scope.returnToSelect = function () {
+        // Show select screen.
+        $scope.selectHidden = false;
+        // Set report shown to 'null'
+        $scope.reportToShow = 0;
+        $scope.hideTable = true;
+        $scope.destroySalesArray();
+    }
+
+    $scope.hideSelect = function() {
+        $scope.selectHidden = true;
+    }
+
+    $scope.showWeekly = function() {
+        $scope.hideSelect();
+        $scope.populateSalesArray(WEEKLY);
+        $scope.reportToShow = 1;
+        // PHP call/ function for call goes here.
+    }
+
+    $scope.showMonthly = function() {
+        $scope.hideSelect();
+        $scope.populateSalesArray(MONTHLY);
+        $scope.reportToShow = 2;
+        // PHP call/ function for call goes here.
+    }
+
+    $scope.showAll = function() {
+        $scope.hideSelect();
+        $scope.populateSalesArray(ALL);
+        $scope.reportToShow = 3;
+        // PHP call/ function for call goes here.
+    }    
 });
