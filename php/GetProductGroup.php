@@ -11,7 +11,7 @@
     {
         return false;
     }
-    $query = "SELECT * FROM Product WHERE ProductGroupId = $prodGroupId";
+    $query = "SELECT * FROM Product WHERE ProductGroupId = $prodGroupId AND QuantityOnHand > 0";
 
     $result = mysqli_query($conn, $query);
 
