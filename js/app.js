@@ -182,10 +182,10 @@ app.controller('ReportController', function($scope, $http) {
     $scope.salesArray = []; 
 
     // Date for naming CSV reports.
-    $scope.date = new Date();
+    $scope.startDate = {value: new Date()};
 
     $scope.populateSalesArray = function (reportType) {
-        var selectedDate = $scope.date == null ? null : $scope.date.toISOString();
+        var selectedDate = $scope.startDate.value == null ? null : $scope.startDate.value.toISOString();
         $http({
             url: './php/DisplaySales.php',
             method: 'GET',

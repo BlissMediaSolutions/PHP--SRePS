@@ -22,7 +22,7 @@
 							<h2 class="tabTitle">Weekly Sales</h2>
 							<div class="row buttonContainer">
 							<label for="dateSelect">Week starting: </label>
-								<input type="date" id="dateSelect" class="hide-replaced" ng-model="date" />
+								<input type="date" id="dateSelect" class="hide-replaced" ng-model="startDate.value" />
 						     	<button type="button" class="btn btn-default btn-lg tabButton" ng-click="getWeeklySales()">Get Report</button>
 							</div>
 							<div class="row" ng-hide="hideTable">
@@ -64,7 +64,7 @@
 							<h2 class="tabTitle">Monthly Sales</h2>
 							<div class="row buttonContainer">
 							<label for="dateSelect">Month starting: </label>
-								<input type="date" id="dateSelect" class="hide-replaced" ng-model="date" />
+								<input type="date" id="dateSelect" class="hide-replaced" ng-model="startDate.value" />
 						     	<button type="button" class="btn btn-default btn-lg tabButton" ng-click="getMonthlySales()">Get Report</button>
 							</div>
 							<div class="row" ng-hide="hideTable">
