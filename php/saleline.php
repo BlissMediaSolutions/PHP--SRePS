@@ -134,7 +134,7 @@
 
         return $newSaleLine;
       }
-  
+
       //Provide an implementation for converting a saleline to JSON.
       public function jsonSerialize(){
         return [
