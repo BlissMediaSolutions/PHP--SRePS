@@ -328,7 +328,7 @@ class DatabaseConstraintTest extends DatabaseTestBase
 			'productGroupId' => '1',
 			'name' => 'test',
 			'price' => '1.0',
-			'quantityOnHand' => '0',
+			'quantityOnHand' => '5',
 			'quantitySold' => '0',
 			'quantityToOrder' => '0',
 			'quantityRequested' => '0',
