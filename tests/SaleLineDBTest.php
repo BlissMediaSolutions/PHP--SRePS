@@ -131,11 +131,8 @@ class SaleLineDBTest extends DatabaseTestBase
                 $saleline->addNewSaleLine($conn);
 
                 //Note product quantities
-                $result = mysqli_query($conn, 'SELECT * FROM Product WHERE Id = 1');
-                $productRow = mysqli_fetch_array($result);
-                $product = Product::getProductFromDBRow($productRow);
-                $productQtyOnHand = $product->getQtyOnHand();
-                $productQtySold = $product->getQtySold();
+                $this->getProductQuantities(1, $conn, $productQtyOnHand, $productQtySold);
+
 
                 //Request to delete saleline
                 $saleline->deleteSaleLine($conn);
@@ -147,6 +144,78 @@ class SaleLineDBTest extends DatabaseTestBase
 
                 $this->assertEquals($productQtyOnHand + 1, $product->getQtyOnHand());
                 $this->assertEquals($productQtySold - 1, $product->getQtySold());
+        }
+
+        public function test_updateSaleLineSameProduct_UpdatesProduct(){
+                require_once("php/saleline.php");
+                require_once("php/sale.php");
+                require("php/settings.php");
+
+                //Create a sale
+                $sale = new Sale(null, null, date("Y-m-d H:i:s"));
+                $sale->addNewSale();
+
+                //Create a new saleline
+                $saleline = new SaleLine(null, 1, $sale->getId(), 1);
+
+                $conn = mysqli_connect($host, $user, $pwd, $sql_db);
+                $saleline->addNewSaleLine($conn);
+
+                //Note product quantities
+                $this->getProductQuantities(1, $conn, $productQtyOnHand, $productQtySold);
+
+                //Update saleline quantities
+                $saleline->setQuantity(3);
+                $saleline->updateSaleLine($conn);
+
+                //Product quantities should update
+                $result = mysqli_query($conn, 'SELECT * FROM Product WHERE Id = 1');
+                $productRow = mysqli_fetch_array($result);
+                $product = Product::getProductFromDBRow($productRow);
+
+                $this->assertEquals($productQtyOnHand - 2, $product->getQtyOnHand());
+                $this->assertEquals($productQtySold + 2, $product->getQtySold());
+        }
+
+        public function test_updateSaleLineDifferentProduct_UpdatesProduct(){
+                require_once("php/saleline.php");
+                require_once("php/sale.php");
+                require("php/settings.php");
+
+                //Create a sale
+                $sale = new Sale(null, null, date("Y-m-d H:i:s"));
+                $sale->addNewSale();
+
+                //Create a new saleline
+                $saleline = new SaleLine(null, 1, $sale->getId(), 1);
+
+                $conn = mysqli_connect($host, $user, $pwd, $sql_db);
+                $saleline->addNewSaleLine($conn);
+
+                //Note product quantities
+                $this->getProductQuantities(1, $conn, $product1QuantityOnHand, $product1QuantitySold);
+                $this->getProductQuantities(2, $conn, $product2QuantityOnHand, $product2QuantitySold);
+
+                //Update saleline product
+                $saleline->setProductId(2);
+                $saleline->updateSaleLine($conn);
+
+                //Product quantities should update
+                $this->getProductQuantities(1, $conn, $product1QuantityOnHandAfter, $product1QuantitySoldAfter);
+                $this->getProductQuantities(2, $conn, $product2QuantityOnHandAfter, $product2QuantitySoldAfter);
+
+                $this->assertEquals($product1QuantityOnHand + 1, $product1QuantityOnHandAfter);
+                $this->assertEquals($product1QuantitySold -1, $product1QuantitySoldAfter);
+                $this->assertEquals($product2QuantityOnHand - 1, $product2QuantityOnHandAfter);
+                $this->assertEquals($product2QuantitySold +1, $product2QuantitySoldAfter);
+        }
+
+        private function getProductQuantities($productId, $conn, &$quantityOnHand, &$quantitySold){
+                $result = mysqli_query($conn, "SELECT * FROM Product WHERE Id = $productId");
+                $productRow = mysqli_fetch_array($result);
+                $product = Product::getProductFromDBRow($productRow);
+                $quantityOnHand = $product->getQtyOnHand();
+                $quantitySold = $product->getQtySold();
         }
 
 }

@@ -22,7 +22,7 @@
 			    <select class="form-control" id="product" ng-model="product" ng-options="product.name for product in products"></select>
 			    <label for="qty">Quantity:</label>
 			    <input type="text" class="form-control" id="qty" ng-model="qty" pattern="^[0-9]*$">
-			    <button type="button" class="btn btn-default btn-lg" ng-click="createSaleItem(product, qty)">Add</button>
+			    <button type="button" class="btn btn-default btn-lg" ng-click="createSaleItem(product, qty)">{{addButtonText}}</button>
 			</div>
     	</div>
     	<!-- impliment second set for xs devices -->
@@ -35,8 +35,9 @@
                         <thead>
                             <tr>
                                 <th id="itemName">Name</th>
-                                <th id="itemQty">Quantity</th>
+                                <th id="itemQty">Qty</th>
                                 <th id="itemCost">Cost</th>
+                                <th id="editItem"></th>
                                 <th id="deleteItem"></th>
                             </tr>
                         </thead>
@@ -45,6 +46,7 @@
                                 <td headers="itemName">{{item.name}}</td>
                                 <td headers="itemQty">{{item.qty}}</td>
                                 <td headers="itemCost">{{item.cost | currency:"$"}}</td>
+                                <td headers="editItem"><a class="handbtn" ng-click="editItem(itemArray.indexOf(item))">Edit</a></td>
                                 <td headers="deleteItem" class="btn" ng-click="deleteItem(itemArray.indexOf(item))">X</td>
                             </tr>
                         </tbody>

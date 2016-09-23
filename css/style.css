@@ -65,6 +65,10 @@ body {
   text-align: center;
 }
 
+.handbtn{
+  cursor:pointer;
+}
+
 /*
 slide-enter-setup
 slide-leave-setup
