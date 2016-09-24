@@ -5,6 +5,9 @@ DROP TRIGGER IF EXISTS TRIG_Product_Insert_Checks;
 DROP TRIGGER IF EXISTS TRIG_Product_Update_Checks;
 DROP TRIGGER IF EXISTS TRIG_SaleLine_Insert_Checks;
 DROP TRIGGER IF EXISTS TRIG_SaleLine_Update_Checks;
+DROP TRIGGER IF EXISTS TRIG_SaleLine_Insert;
+DROP TRIGGER IF EXISTS TRIG_SaleLine_Update;
+DROP TRIGGER IF EXISTS TRIG_SaleLine_Delete;
 DROP TABLE IF EXISTS SaleLine, Sale, Customer, Product, ProductGroup;
 
 #Create tables
@@ -48,8 +51,8 @@ CREATE TABLE SaleLine(
     CONSTRAINT FK_SaleLine_Sale FOREIGN KEY (SaleId) REFERENCES Sale(Id)
 );
 
-#Create triggers to mimic CHECK constraints
 delimiter //
+#Create triggers on the product table to mimic CHECK constraints
 CREATE TRIGGER TRIG_Product_Insert_Checks BEFORE INSERT ON Product
 FOR EACH ROW
 BEGIN
@@ -80,7 +83,6 @@ BEGIN
 	END IF;
 END
 //
-
 
 CREATE TRIGGER TRIG_Product_Update_Checks BEFORE UPDATE ON Product
 FOR EACH ROW
@@ -113,7 +115,9 @@ BEGIN
 END
 //
 
-CREATE TRIGGER TRIG_SaleLine_Insert_Checks BEFORE INSERT ON SaleLine
+#Create triggers on the SaleLine table to act as check constraints and to
+#keep the product QuantityOnHand and QuantitySold values consistent
+CREATE TRIGGER TRIG_SaleLine_Insert BEFORE INSERT ON SaleLine
 FOR EACH ROW
 BEGIN
 	DECLARE msg varchar(128);
@@ -121,6 +125,12 @@ BEGIN
 		set msg = concat('TRIG_SaleLine_Insert_Checks Error:',
 			'Trying to insert a non-positive value into SaleLine.Quantity: ',
             cast(NEW.Quantity as char));
+	ELSE
+		UPDATE Product 
+		SET 
+			QuantityOnHand = QuantityOnHand - NEW.Quantity,
+			QuantitySold = QuantitySold + NEW.Quantity
+		WHERE Id = NEW.ProductId;
 	END IF;
     IF msg IS NOT NULL THEN
 		signal sqlstate '45000' set message_text = msg;
@@ -128,7 +138,7 @@ BEGIN
 END
 //
 
-CREATE TRIGGER TRIG_SaleLine_Update_Checks BEFORE UPDATE ON SaleLine
+CREATE TRIGGER TRIG_SaleLine_Update BEFORE UPDATE ON SaleLine
 FOR EACH ROW
 BEGIN
 	DECLARE msg varchar(128);
@@ -136,10 +146,33 @@ BEGIN
 		set msg = concat('TRIG_SaleLine_Update_Checks Error:',
 			'Trying to update a non-positive value in SaleLine.Quantity: ',
             cast(NEW.Quantity as char));
+	ELSE
+		UPDATE Product 
+		SET 
+			QuantityOnHand = QuantityOnHand + OLD.Quantity,
+			QuantitySold = QuantitySold - OLD.Quantity
+		WHERE Id = OLD.ProductId;
+		
+		UPDATE Product
+		SET
+			QuantityOnHand = QuantityOnHand - NEW.Quantity,
+			QuantitySold = QuantitySold + NEW.Quantity
+		WHERE Id = NEW.ProductId;
 	END IF;
     IF msg IS NOT NULL THEN
 		signal sqlstate '45000' set message_text = msg;
 	END IF;
+END
+//
+
+CREATE TRIGGER TRIG_SaleLine_Delete BEFORE DELETE ON SaleLine
+FOR EACH ROW
+BEGIN
+	UPDATE Product 
+    SET 
+		QuantityOnHand = QuantityOnHand + OLD.Quantity,
+        QuantitySold = QuantitySold - OLD.Quantity
+	WHERE Id = OLD.ProductId;
 END
 //
 

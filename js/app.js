@@ -15,6 +15,9 @@ app.config(function ($routeProvider) {
         templateUrl: "./templates/reports.html"
     }).when("/faq", {
         templateUrl: "./templates/faq.html"
+    }).when("/predictions", {
+        controller: 'PredictionController',
+        templateUrl: "./templates/predictions.html"
     })
 });
 
@@ -40,6 +43,7 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
     $scope.itemArray = []; // Array of sale items.
     $scope.totalPrice = 0.0;
     $scope.saleId = 0;
+    $scope.addButtonText = 'Add';
     var salesController = this;
 
     $scope.readyPage = function () {
@@ -77,15 +81,28 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
     }
 
     $scope.createSaleItem = function(product, qty) { // add sale item to array.
-        $scope.sale = {
-            id:0, //signals this is a new item
-            productId:product.id,
-            name:product.name,
-            qty:qty,
-            cost:parseFloat(product.price)*parseFloat(qty)
-        };
-        $scope.itemArray.push($scope.sale);
+        if ($scope.itemEditing != null){
+            $scope.sale = $scope.itemEditing;
+        }
+        else{
+            $scope.sale = {
+                id : 0
+            };
+        }
+        $scope.sale.productId = product.id;
+        $scope.sale.name = product.name;
+        $scope.sale.qty = qty;
+        $scope.sale.cost = parseFloat(product.price)*parseFloat(qty);
+        $scope.sale.productId = product.id;
+        
+        if ($scope.itemEditing != null){
+            $scope.itemEditing = null;
+        }
+        else{
+            $scope.itemArray.push($scope.sale);
+        } 
         salesController.updateTotalPrice();
+        $scope.addButtonText = 'Add';
     }
 
     $scope.maxPage = function () {
@@ -129,8 +146,47 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
 
     //Remove an item from our Items array, and update the total price
     $scope.deleteItem = function(itemIndex){
+        if ($scope.itemEditing == $scope.itemArray[itemIndex]){
+            $scope.itemEditing = null; //in case we're editing the item being deleted
+            $scope.addButtonText = 'Add';
+        }
         $scope.itemArray.splice(itemIndex, 1);
         salesController.updateTotalPrice();
+    }
+
+    //Allow a particular saleline to be edited
+    $scope.editItem = function(itemIndex){
+        $scope.itemEditing = $scope.itemArray[itemIndex];
+        $scope.addButtonText = 'Update';
+
+        //Only have the product ID, but to display correctly need
+        //all products in the group + the group name
+        $http({
+            url: './php/GetProductsInGroupFromProductId.php',
+            method: 'GET',
+            params: { 'ProductId' : $scope.itemEditing.productId}
+        })
+        .then(function successCallback(response){
+            //Identify product group
+            for (var i = 0; i < $scope.productGroups.length; i++){
+                if ($scope.productGroups[i].Id == response.data.productGroupId){
+                    $scope.productGroup = $scope.productGroups[i];
+                    break;
+                }
+            }
+
+            //Populate products
+            $scope.products = response.data.products;
+            //Select correct product
+            for (var i = 0; i < $scope.products.length; i++){
+                if ($scope.products[i].id == $scope.itemEditing.productId){
+                    $scope.product = $scope.products[i];
+                    break;
+                }
+            }
+            $scope.gSelected = true;
+            $scope.qty = $scope.itemEditing.qty;
+        });
     }
 
     //Calculate the total price based on the items
@@ -263,5 +319,35 @@ app.controller('ReportController', function($scope, $http) {
     $scope.getMonthlySales = function(){
         $scope.populateSalesArray(MONTHLY);
         $scope.hideTable = false;
+    }
+});
+
+app.controller('PredictionController', function($scope, $http) {
+    // PHP call to fill 'product' array.
+    // Each product object containing information about the product, particularly the average quanitity sold + quantity on hand.
+    // Using the two values, provide 'amount to order.'
+
+    // Bool for table hide.
+    $scope.predictionHide = true;
+
+    // Create Array.
+    $scope.productArray = [];
+
+    // Function to add product to array
+    $scope.addProduct = function(name, group, price, saleAvg, qtyOnHand) {
+        $scope.productArray.push({'name':name, 'productGroup':group, 'price':price, 'averageSales':saleAvg, 'quantityOnHand':qtyOnHand, 'quantityToOrder':(saleAvg - qtyOnHand)});
+    }
+
+    // Will impliement the PHP to retrieve all of the products & their data.
+    // Using the 'addProduct' function to add each product to the array.
+    // The array is updated and 'unhidden' on this function call.
+    $scope.getPredictions = function () {
+        $scope.predictionHide = false;
+        // PHP GET HERE
+    }
+
+    // For testing purposes, will delete later.
+    $scope.add = function() {
+        $scope.addProduct('test', 'testgroup', 25, 5, 2);
     }
 });

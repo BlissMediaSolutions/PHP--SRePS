@@ -90,30 +90,19 @@
         $result = $this->WriteDelDbase($sqltable, $query, $insertId);
 
         $this->setId($insertId);
+        return $result;
+      }
 
-        //Go and update the associated product
-        $query = "SELECT * FROM Product WHERE Id = $this->prodid";
-        $result = mysqli_query($conn, $query);
-        $resultRow = mysqli_fetch_array($result);
-        $thisProduct = Product::getProductFromDBRow($resultRow);
+      function updateSaleLine($conn){
+        $sqltable = "SaleLine";
+        $query = "UPDATE $sqltable SET ProductId = $this->prodid, Quantity = $this->quantity WHERE Id = $this->id";
 
-        $thisProduct->updateProductData($this->quantity);
-
+        $result = $this->WriteDelDbase($sqltable, $query);
         return $result;
       }
 
       //Delete a SaleLine from the database, and update the associated product's quantity
       function deleteSaleLine($conn){
-        //Get the relevant product
-        $query = "SELECT * FROM Product WHERE Id = $this->prodid";
-        $result = mysqli_query($conn, $query);
-        $resultRow = mysqli_fetch_array($result);
-        $thisProduct = Product::getProductFromDBRow($resultRow);
-
-        //Reduce quantity by the specified amount
-        $productQtyChange = $this->getQuantity() * -1;
-        $thisProduct->updateProductData($productQtyChange);
-
         //Delete the Saleline
         $sqltable = "SaleLine";
         $query = "DELETE FROM $sqltable WHERE Id = $this->id";
