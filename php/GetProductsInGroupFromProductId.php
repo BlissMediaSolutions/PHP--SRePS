@@ -16,7 +16,7 @@
     $result = mysqli_query($conn, $query);
     $productGroupId = mysqli_fetch_row($result)[0];
 
-    $query = "SELECT * FROM Product WHERE ProductGroupId = $productGroupId";
+    $query = "SELECT * FROM Product WHERE ProductGroupId = $productGroupId AND QuantityOnHand > 0";
     $result = mysqli_query($conn, $query);
 
     $products = array();
