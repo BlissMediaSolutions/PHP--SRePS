@@ -15,6 +15,9 @@ app.config(function ($routeProvider) {
         templateUrl: "./templates/reports.html"
     }).when("/faq", {
         templateUrl: "./templates/faq.html"
+    }).when("/predictions", {
+        controller: 'PredictionController',
+        templateUrl: "./templates/predictions.html"
     })
 });
 
@@ -316,5 +319,35 @@ app.controller('ReportController', function($scope, $http) {
     $scope.getMonthlySales = function(){
         $scope.populateSalesArray(MONTHLY);
         $scope.hideTable = false;
+    }
+});
+
+app.controller('PredictionController', function($scope, $http) {
+    // PHP call to fill 'product' array.
+    // Each product object containing information about the product, particularly the average quanitity sold + quantity on hand.
+    // Using the two values, provide 'amount to order.'
+
+    // Bool for table hide.
+    $scope.predictionHide = true;
+
+    // Create Array.
+    $scope.productArray = [];
+
+    // Function to add product to array
+    $scope.addProduct = function(name, group, price, saleAvg, qtyOnHand) {
+        $scope.productArray.push({'name':name, 'productGroup':group, 'price':price, 'averageSales':saleAvg, 'quantityOnHand':qtyOnHand, 'quantityToOrder':(saleAvg - qtyOnHand)});
+    }
+
+    // Will impliement the PHP to retrieve all of the products & their data.
+    // Using the 'addProduct' function to add each product to the array.
+    // The array is updated and 'unhidden' on this function call.
+    $scope.getPredictions = function () {
+        $scope.predictionHide = false;
+        // PHP GET HERE
+    }
+
+    // For testing purposes, will delete later.
+    $scope.add = function() {
+        $scope.addProduct('test', 'testgroup', 25, 5, 2);
     }
 });
