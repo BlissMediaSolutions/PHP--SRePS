@@ -7,23 +7,24 @@
 
    $orderPredict = new Sale('1');
 
-   $sqlstring = "SELECT Product.ProductGroupId, Product.Id, Product.Name,".
+   $sqlstring = "SELECT Product.ProductGroupId, Product.Id, Product.Name,"."
                 "SUM(CASE WHEN Sale.SaleDateTime <= CURDATE()".
                       "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 7 DAY) THEN SaleLine.Quantity ELSE 0 END) AS LastWeek,".
                 "SUM(CASE WHEN Sale.SaleDateTime <= (CURDATE() - INTERVAL 7 DAY)".
                       "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 14 DAY) THEN SaleLine.Quantity ELSE 0 END) AS TwoWeeksAgo,".
                 "SUM(CASE WHEN Sale.SaleDateTime <= (CURDATE() - INTERVAL 14 DAY)".
-                      "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 21 DAY) THEN SaleLine.Quantity ELSE 0 END) AS ThreeWeeksAgo,".
+                      "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 21 DAY) THEN SaleLine.Quantity ELSE 0 END) AS ThreeWeeksAgo,
                 "SUM(CASE WHEN Sale.SaleDateTime <= (CURDATE() - INTERVAL 21 DAY)".
                       "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 28 DAY) THEN SaleLine.Quantity ELSE 0 END) AS FourWeeksAgo,".
 		            "(SELECT CEIL(SUM(Quantity)/4)".
 			          "FROM SaleLine sl".
                     "JOIN Sale s ON s.Id = sl.SaleId".
                     "WHERE sl.ProductId = Product.Id".
-                    "AND s.SaleDateTime > (CURDATE() - INTERVAL 28 DAY)) AS QTY_ORDER".
-                "FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId JOIN Product ON SaleLine.ProductId = Product.Id".
+                    "AND s.SaleDateTime > (CURDATE() - INTERVAL 28 DAY)) AS QTY_ORDER,".
+                    "Product.QuantityOnHand AS QTY_ON_HAND".
+                "FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId RIGHT OUTER JOIN Product ON SaleLine.ProductId = Product.Id ".
                     "GROUP BY Product.ProductGroupId, Product.Id, Product.Name".
-                    "ORDER BY ProductId";
+                    "ORDER BY Product.ProductGroupId, SaleLine.ProductId";
 
       $orderPredict->GetData($sqlstring);
 
