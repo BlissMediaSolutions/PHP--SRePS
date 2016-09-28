@@ -69,6 +69,10 @@ body {
   cursor:pointer;
 }
 
+.productTab {
+  width: 85%;
+}
+
 /*
 slide-enter-setup
 slide-leave-setup

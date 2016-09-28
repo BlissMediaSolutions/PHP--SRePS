@@ -354,11 +354,37 @@ app.controller('PredictionController', function($scope, $http) {
 });
 
 app.controller('ProductController', function($scope, $http) {
+    // Hard coded pGroup data
+    $scope.productGroups = [
+        {'Id':1, 'Name':'Painkillers'},
+        {'Id':2, 'Name':'Prescription drugs'},
+        {'Id':3, 'Name':'Vitamins'},
+        {'Id':4, 'Name':'Fragrances'},
+        {'Id':5, 'Name':'Weight loss'},
+        {'Id':6, 'Name':'Dental care'}];
+
+    // Tab View Buttons
     $scope.buttonView = true;
 
+    // Tab Views
     $scope.addTab = false;
     $scope.editTab = false;
     $scope.deleteTab = false;
+
+    // Edit View ng-show booleans
+    $scope.hasProduct = false;
+
+    // Add Variables
+    $scope.addName;
+    $scope.addGroup;
+    $scope.addPrice;
+
+    // Edit Variables
+    $scope.editName;
+    $scope.editGroup;
+    $scope.editPrice;
+
+    // Delete Varaibles
 
     $scope.addButton = function() {
         $scope.addTab = true;
@@ -385,10 +411,31 @@ app.controller('ProductController', function($scope, $http) {
     }
 
     $scope.returnButton = function() {
+        // Tab view reset
         $scope.addTab = false;
         $scope.editTab = false;
         $scope.deleteTab = false; 
 
+        // Tab view Button reset
         $scope.buttonView = true;
+
+        // Has Product reset
+        $scope.hasProduct = false;
+    }
+
+    $scope.getProductToEdit = function () {
+        // will contain PHP
+        // Needs to retrieve data to fill form.
+        $scope.hasProduct = true;
+    }
+
+    $scope.productEditBack = function () {
+        $scope.hasProduct = false;
+        $scope.editName = "";
+    }
+
+    $scope.productEditSubmit = function () {
+        // Will contain PHP
+        // Needs to send new data
     }
 });
