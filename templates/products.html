@@ -3,6 +3,70 @@
         <h1>Products</h1>
     </div>
     <div class="row">
+    	<div class="col-sm-12 reportBox">
+    		<!-- TAB SELECT -->
+			<div class="row " ng-show="buttonView">
+				<div class="col-sm-12 selectTab">
+					<h2 class="tabTitle">Products</h2>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="addButton()">Add Product</button><br>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="editButton()">Edit Product</button><br>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="deleteButton()">Delete Product</button><br>
+				</div>
+			</div>
 
+			<!-- ADD TAB -->
+			<div class="container productTab" ng-show="addTab">
+				<div class="form-group">
+			   		<label for="pNameAdd">Product Name:</label><br>
+			   		<input type="text" class="form-control" id="pNameAdd" ng-model="addName">
+
+			   		<label for="pGroupAdd">Product Group:</label><br>
+			   		<select class="form-control" id="pGroupAdd" ng-model="addGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)"></select>
+
+			   		<label for="pPriceAdd">Product Price:</label><br>
+			   		<input type="text" class="form-control" id="pPriceAdd" ng-model="addPrice">
+				</div>
+
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="returnButton()">Return</button>
+
+				<!-- Triggers PHP to INSERT new product? -->
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="">Add Product</button>
+			</div>
+
+			<!-- EDIT TAB -->
+			<div class="container productTab" ng-show="editTab">
+				<div class="form-group" ng-hide="hasProduct">
+					<label for="pNameEdit">Product Name:</label><br>
+					<input type="text" class="form-control" id="pNameEdit" ng-model="editName">
+					<!-- Button triggers PHP to retrieve product based on name -->
+					<!-- Possibly fill a drop down instead? -->
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="getProductToEdit()">Get Product</button><br>
+				</div>
+
+				<div class="form-group" ng-show="hasProduct">
+					<p><b>Editing:</b> {{editName}}</p>
+					<label for="pGroupEdit">Product Group:</label><br>
+			   		<select class="form-control" id="pGroupEdit" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)"></select>
+
+			   		<label for="pPriceEdit">Product Price:</label><br>
+			   		<input type="text" class="form-control" id="pPriceEdit" ng-model="editPrice">
+					<!-- Button triggers PHP to edit product -->
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="productEditBack()">Back</button>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="productEditSubmit()">Edit Product</button><br>
+				</div>
+				
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="returnButton()">Return</button>
+			</div>
+
+			<!-- DELETE TAB -->
+			<div class="container productTab" ng-show="deleteTab">
+				<label for="pDeleteName">Product Name:</label><br>
+		   		<input type="text" class="form-control" id="pDeleteName" ng-model="deleteName">
+				<!-- Button triggers PHP to edit product -->
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="returnButton()">Return</button>
+
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="">Delete Product</button>
+			</div>
+    	</div>
     </div>
 </div>
