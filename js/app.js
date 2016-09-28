@@ -9,12 +9,16 @@ app.config(function ($routeProvider) {
         controller: 'SalesController',
         templateUrl: "./templates/sales.html"
     }).when("/products", {
+        controller: 'ProductController',
         templateUrl: "./templates/products.html"
     }).when("/reports", {
         controller: 'ReportController',
         templateUrl: "./templates/reports.html"
     }).when("/faq", {
         templateUrl: "./templates/faq.html"
+    }).when("/predictions", {
+        controller: 'PredictionController',
+        templateUrl: "./templates/predictions.html"
     })
 });
 
@@ -316,5 +320,75 @@ app.controller('ReportController', function($scope, $http) {
     $scope.getMonthlySales = function(){
         $scope.populateSalesArray(MONTHLY);
         $scope.hideTable = false;
+    }
+});
+
+app.controller('PredictionController', function($scope, $http) {
+    // PHP call to fill 'product' array.
+    // Each product object containing information about the product, particularly the average quanitity sold + quantity on hand.
+    // Using the two values, provide 'amount to order.'
+
+    // Bool for table hide.
+    $scope.predictionHide = true;
+
+    // Create Array.
+    $scope.productArray = [];
+
+    // Function to add product to array
+    $scope.addProduct = function(name, group, price, saleAvg, qtyOnHand) {
+        $scope.productArray.push({'name':name, 'productGroup':group, 'price':price, 'averageSales':saleAvg, 'quantityOnHand':qtyOnHand, 'quantityToOrder':(saleAvg - qtyOnHand)});
+    }
+
+    // Will impliement the PHP to retrieve all of the products & their data.
+    // Using the 'addProduct' function to add each product to the array.
+    // The array is updated and 'unhidden' on this function call.
+    $scope.getPredictions = function () {
+        $scope.predictionHide = false;
+        // PHP GET HERE
+    }
+
+    // For testing purposes, will delete later.
+    $scope.add = function() {
+        $scope.addProduct('test', 'testgroup', 25, 5, 2);
+    }
+});
+
+app.controller('ProductController', function($scope, $http) {
+    $scope.buttonView = true;
+
+    $scope.addTab = false;
+    $scope.editTab = false;
+    $scope.deleteTab = false;
+
+    $scope.addButton = function() {
+        $scope.addTab = true;
+        $scope.editTab = false;
+        $scope.deleteTab = false;
+
+        $scope.buttonView = false;
+    }
+
+    $scope.editButton = function() {
+        $scope.addTab = false;
+        $scope.editTab = true;
+        $scope.deleteTab = false; 
+
+        $scope.buttonView = false;
+    }
+
+    $scope.deleteButton = function() {
+        $scope.addTab = false;
+        $scope.editTab = false;
+        $scope.deleteTab = true; 
+
+        $scope.buttonView = false;
+    }
+
+    $scope.returnButton = function() {
+        $scope.addTab = false;
+        $scope.editTab = false;
+        $scope.deleteTab = false; 
+
+        $scope.buttonView = true;
     }
 });

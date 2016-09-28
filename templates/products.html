@@ -5,18 +5,33 @@
     <div class="row">
     	<div class="col-sm-12 reportBox">
     		<!-- TAB SELECT -->
-			<div class="row" ng-hide="">
+			<div class="row" ng-show="buttonView">
 				<div class="col-sm-12 selectTab">
 					<h2 class="tabTitle">Products</h2>
-					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="">Add Product</button><br>
-					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="">Edit Product</button><br>
-					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="">Delete Product</button><br>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="addButton()">Add Product</button><br>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="editButton()">Edit Product</button><br>
+					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="deleteButton()">Delete Product</button><br>
 				</div>
 			</div>
 
 			<!-- ADD TAB -->
+			<div class="container" ng-show="addTab">
+
+			
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="returnButton()">Return</button>
+			</div>
 			<!-- EDIT TAB -->
+			<div class="container" ng-show="editTab">
+
+
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="returnButton()">Return</button>
+			</div>
 			<!-- DELETE TAB -->
+			<div class="container" ng-show="deleteTab">
+
+
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="returnButton()">Return</button>
+			</div>
     	</div>
     </div>
 </div>
