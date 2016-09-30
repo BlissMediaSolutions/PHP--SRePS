@@ -30,32 +30,64 @@ class ProductDBTest extends DatabaseTestBase
         $this->assertEquals(0, $product->getQtyRequested());
 	}
 
-        public function test_updateProductData_UpdatesProductQuantitiesCorrectly()
+        public function test_addNewProduct_addsProduct()
         {
                 require("php/settings.php");
                 require_once("php/product.php");
 
-                //Get product from DB
+                //Get number of products
+                $productCount = $this->getConnection()->getRowCount('Product');
+
+                //Create a product
+                $product = new Product(null, 1, 'Test', '3.5', 2, 0, 0, 0);
+                $product->addNewProduct();
+
+                //Should be a new product
+                $this->assertEquals($productCount + 1, $this->getConnection()->getRowCount('Product'));
+
+                //Product should have correct values
+                $conn = mysqli_connect($host, $user, $pwd, $sql_db);
+                $result = mysqli_query($conn, 'SELECT * FROM Product WHERE Id = 16');
+                $productRow = mysqli_fetch_array($result);
+                $addedProduct = Product::getProductFromDBRow($productRow);
+
+                $this->assertEquals(1, $addedProduct->getProdGroupID());
+                $this->assertEquals('Test', $addedProduct->getName());
+                $this->assertEquals(3.5, $addedProduct->getPrice());
+                $this->assertEquals(2, $addedProduct->getQtyOnHand());
+                $this->assertEquals(0, $product->getQtySold());
+                $this->assertEquals(0, $product->getQtyToOrder());
+                $this->assertEquals(0, $product->getQtyRequested());
+        }
+
+        public function test_updateProduct_updatesProduct()
+        {
+                require("php/settings.php");
+                require_once("php/product.php");
+
+                //Get number of products
+                $productCount = $this->getConnection()->getRowCount('Product');
+
+                //Create an updated product
+                $product = new Product(1, 2, 'Test', 2.1, 3, 4, 5, 6);
+                $product->updateProduct();
+
+                //Should be the same number of products
+                $this->assertEquals($productCount, $this->getConnection()->getRowCount('Product'));
+
+                //Product should have correct values
                 $conn = mysqli_connect($host, $user, $pwd, $sql_db);
                 $result = mysqli_query($conn, 'SELECT * FROM Product WHERE Id = 1');
                 $productRow = mysqli_fetch_array($result);
-                $product = Product::getProductFromDBRow($productRow);
+                $addedProduct = Product::getProductFromDBRow($productRow);
 
-                //Note initial quantities.
-                $productQtyOnHand = $product->getQtyOnHand();
-                $productQtySold = $product->getQtySold();
-
-                //Request that the quantity be updated by '2'
-                $product->updateProductData(2);
-
-                //Reget product
-                $result = mysqli_query($conn, 'SELECT * FROM Product WHERE Id = 1');
-                $productRow = mysqli_fetch_array($result);
-                $product = Product::getProductFromDBRow($productRow);
-
-                //Quantity should now have changed correctly
-                $this->assertEquals($productQtyOnHand - 2, $product->getQtyOnHand());
-                $this->assertEquals($productQtySold + 2, $product->getQtySold());
+                $this->assertEquals(2, $addedProduct->getProdGroupID());
+                $this->assertEquals('Test', $addedProduct->getName());
+                $this->assertEquals(2.1, $addedProduct->getPrice());
+                $this->assertEquals(3, $addedProduct->getQtyOnHand());
+                $this->assertEquals(4, $product->getQtySold());
+                $this->assertEquals(5, $product->getQtyToOrder());
+                $this->assertEquals(6, $product->getQtyRequested());
         }
 }
 ?>

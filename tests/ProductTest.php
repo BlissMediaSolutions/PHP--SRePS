@@ -60,7 +60,9 @@ class ProductTest extends PHPUnit_Framework_TestCase
 				'"quantityOnHand":"25",'.
 				'"quantitySold":"5",'.
 				'"quantityToOrder":"50",'.
-				'"quantityRequested":"0"'.
+				'"quantityRequested":"0",'.
+				'"productGroupId":"02",'.
+				'"productGroupName":null'.
 				'}', 
 			json_encode($newProduct));
 	}

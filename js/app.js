@@ -363,65 +363,55 @@ app.controller('ProductController', function($scope, $http) {
         {'Id':5, 'Name':'Weight loss'},
         {'Id':6, 'Name':'Dental care'}];
 
-    //All products display
+    //What to display
     $scope.showAllProducts = true;
+    $scope.addEditTab = false;
 
-    // Tab Views
-    $scope.addTab = false;
-    $scope.editTab = false;
-    $scope.deleteTab = false;
-
-    // Edit View ng-show booleans
-    $scope.hasProduct = false;
-
-    // Add Variables
-    $scope.addName;
-    $scope.addGroup;
-    $scope.addPrice;
-
-    // Edit Variables
-    $scope.editName;
-    $scope.editGroup;
-    $scope.editPrice;
-
-    // Delete Varaibles
+    var productController = this;
 
     $scope.addButton = function() {
-        $scope.addTab = true;
-        $scope.editTab = false;
-        $scope.deleteTab = false;
-
+        $scope.addEditTab = true;
         $scope.showAllProducts = false;
+        
+        $scope.product = {
+            id: 0,
+            name: null,
+            productGroupId: null,
+            price: 0.00,
+            quantityOnHand: 0
+        };
+
+        $scope.addEditLabel = "Add";
     }
 
-    $scope.returnButton = function() {
+    $scope.editProduct = function(product) {
+        $scope.addEditTab = true;
+        $scope.showAllProducts = false;
+
+        $scope.product = {
+            id: product.id,
+            name: product.name,
+            productGroupId: product.productGroupId,
+            price: product.price,
+            quantityOnHand: parseInt(product.quantityOnHand)
+        };
+
+        //Select correct product group
+        for (var i = 0; i < $scope.productGroups.length; i++){
+            if ($scope.productGroups[i].Id == product.productGroupId){
+                $scope.productGroup = $scope.productGroups[i];
+                break;
+            }
+        }
+
+        $scope.addEditLabel = "Update";
+    }
+
+    $scope.return = function() {
         // Tab view reset
-        $scope.addTab = false;
-        $scope.editTab = false;
-        $scope.deleteTab = false; 
-
-        // Show all products again
+        $scope.addEditTab = false;
         $scope.showAllProducts = true;
-        this.refreshProducts();
-
-        // Has Product reset
-        $scope.hasProduct = false;
-    }
-
-    $scope.getProductToEdit = function () {
-        // will contain PHP
-        // Needs to retrieve data to fill form.
-        $scope.hasProduct = true;
-    }
-
-    $scope.productEditBack = function () {
-        $scope.hasProduct = false;
-        $scope.editName = "";
-    }
-
-    $scope.productEditSubmit = function () {
-        // Will contain PHP
-        // Needs to send new data
+        productController.refreshProducts();
     }
 
     //Refresh the list of products
@@ -437,6 +427,26 @@ app.controller('ProductController', function($scope, $http) {
             $scope.products = [];
         });
     };
+
+    //After the user has added/edited a product, call the backend to commit this to the database
+    $scope.addEditProduct = function() {
+        //Populate the product group Id
+        $scope.product.productGroupId = $scope.productGroup.Id;
+        $http({
+            url: './php/AddEditProduct.php',
+            method: 'GET',
+            params: {
+                'ProductId' : $scope.product.id,
+                'ProductGroupId' : $scope.product.productGroupId,
+                'Name' : $scope.product.name,
+                'Price' : $scope.product.price,
+                'QuantityOnHand' : $scope.product.quantityOnHand
+            }
+        })
+        .then(function successCallback(response){
+            $scope.return();
+        });
+    }
 
     //Show products straight away
     this.refreshProducts();
