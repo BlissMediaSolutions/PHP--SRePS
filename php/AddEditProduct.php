@@ -19,7 +19,7 @@
     }
 
     //check the qty is numeric & equal to or greater than 0
-    if (!is_numeric($quantityOnHand) OR $qty < 0)
+    if (!is_numeric($quantityOnHand) OR $quantityOnHand < 0)
     {
         return false;
     }
@@ -31,6 +31,7 @@
         $product->updateProduct();
     }
     else{
+        //Add the new Product to the Database
         $product->addNewProduct();
     }
 ?>
