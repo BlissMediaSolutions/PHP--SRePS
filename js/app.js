@@ -414,20 +414,6 @@ app.controller('ProductController', function($scope, $http) {
         productController.refreshProducts();
     }
 
-    //Refresh the list of products
-    this.refreshProducts = function(){
-        $http({
-            url: './php/GetProducts.php',
-            method: 'GET'
-        })
-        .then(function successCallback(response){
-            $scope.products = response.data;
-        }, function errorCallback(response){
-            //Ooops! figure out what to do here...
-            $scope.products = [];
-        });
-    };
-
     //After the user has added/edited a product, call the backend to commit this to the database
     $scope.addEditProduct = function() {
         //Populate the product group Id
@@ -446,7 +432,44 @@ app.controller('ProductController', function($scope, $http) {
         .then(function successCallback(response){
             $scope.return();
         });
-    }
+    };
+
+    //Delete a specified product if the user confirms this is what they want to do
+    $scope.deleteProduct = function(productId){
+        bootbox.confirm("Delete this product?", function(result){
+            if (!result) return;
+            $http({
+                url: './php/DeleteProduct.php',
+                method: 'GET',
+                params: {
+                    'ProductId' : productId
+                }
+            })
+            .then(function successCallback(response){
+                //Product has been deleted from the database. Stop displaying it.
+                for (var i = 0; i < $scope.products.length; i++){
+                    if ($scope.products[i].id == productId){
+                        $scope.products.splice(i, 1);
+                        break;
+                    }
+                }
+            });
+        })
+    };
+
+    //Refresh the list of products
+    this.refreshProducts = function(){
+        $http({
+            url: './php/GetProducts.php',
+            method: 'GET'
+        })
+        .then(function successCallback(response){
+            $scope.products = response.data;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.products = [];
+        });
+    };
 
     //Show products straight away
     this.refreshProducts();

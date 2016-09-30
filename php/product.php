@@ -33,8 +33,8 @@ class Product extends dbase implements JsonSerializable
 	}
 
 	/* Class Constructor with 1 argument   */
-	public function __construct1 ($prodgroupid) {
-		$this->prodgroupid = $prodgroupid;
+	public function __construct1 ($id) {
+		$this->id = $id;
 	}
 
 	/*Class Constructor with 8 arguments  */
