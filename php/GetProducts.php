@@ -1,9 +1,5 @@
 <?php
-
     include_once('product.php');
-
-    $prodGroupId = $_GET['ProductGroupId'];  //Get the Product Group Selected
-
     require("settings.php");
     $conn = mysqli_connect($host, $user, $pwd, $sql_db);
 
@@ -11,7 +7,11 @@
     {
         return false;
     }
-    $query = "SELECT * FROM Product WHERE ProductGroupId = $prodGroupId AND QuantityOnHand > 0 AND IsHidden = 0";
+    
+    $query = 'SELECT ProductGroup.Name ProductGroupName, Product.* '.
+        'FROM Product JOIN ProductGroup ON ProductGroup.Id = ProductGroupId '.
+        'WHERE IsHidden = 0 ' .
+        'ORDER BY ProductGroupName, Product.Name';
 
     $result = mysqli_query($conn, $query);
 

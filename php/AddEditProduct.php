@@ -6,32 +6,31 @@
     include_once('product.php');
 
     //Get parameters
-    $prodGroupID = $_GET['ProductGroupId'];
+    $productId = $_GET['ProductId'];
+    $productGroupId = $_GET['ProductGroupId'];
     $name = $_GET['Name'];
     $price = $_GET['Price'];
-    $qty = $_GET['Qty'];
+    $quantityOnHand = $_GET['QuantityOnHand'];
 
     //check the price is numeric & greater than 0
-    if(!is_numeric($price) OR $price < 1)
+    if(!is_numeric($price) OR $price < 0)
     {
         return false;
     }
 
     //check the qty is numeric & equal to or greater than 0
-    if (!is_numeric($qty) OR $qty < 0)
+    if (!is_numeric($quantityOnHand) OR $qty < 0)
     {
         return false;
     }
 
     //Create a new Product Object, and add it to the Database.  QtySold, QtyToOrder & QtyRequested should be set to 0
-    $newProduct = new Product('1', $prodGroupID, $name, $price, $qty, '0', '0', '0');
-    $newProduct->addNewProduct();
-
-
-
-
-
-
-
-
+    $product = new Product($productId, $productGroupId, $name, $price, $quantityOnHand, '0', '0', '0');
+    if ($productId > 0){
+        //Product already exists! Update it
+        $product->updateProduct();
+    }
+    else{
+        $product->addNewProduct();
+    }
 ?>
