@@ -19,6 +19,7 @@
                 "CEIL(SUM(CASE WHEN Sale.SaleDateTime > (CURDATE() - INTERVAL 28 DAY) THEN SaleLine.Quantity / 4 ELSE 0 END)) AS REC_STOCK_LEVEL, ".
                     "Product.QuantityOnHand AS QTY_ON_HAND ".
                 "FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId RIGHT OUTER JOIN Product ON SaleLine.ProductId = Product.Id ".
+                "WHERE Product.IsHidden = 0 ".
                     "GROUP BY Product.ProductGroupId, Product.Id, Product.Name ".
                     "ORDER BY Product.ProductGroupId, Product.Id";
 

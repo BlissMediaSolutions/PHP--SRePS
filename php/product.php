@@ -7,10 +7,10 @@ include_once('dbase.php');
 
 class Product extends dbase implements JsonSerializable
 {
-
   	/* Class variables */
 	private $id;
 	private $prodgroupid;
+	private $productGroupName;
 	private $name;
 	private $price;
 	private $qtyOnHand;
@@ -33,8 +33,8 @@ class Product extends dbase implements JsonSerializable
 	}
 
 	/* Class Constructor with 1 argument   */
-	public function __construct1 ($prodgroupid) {
-		$this->prodgroupid = $prodgroupid;
+	public function __construct1 ($id) {
+		$this->id = $id;
 	}
 
 	/*Class Constructor with 8 arguments  */
@@ -70,6 +70,14 @@ class Product extends dbase implements JsonSerializable
 
 	function getProdGroupID(){
 		return $this->prodgroupid;
+	}
+
+	function setProductGroupName($par){
+		$this->productGroupName = $par;
+	}
+
+	function getProductGroupName(){
+		return $this->productGroupName;
 	}
 
 	function setName($par){
@@ -120,23 +128,39 @@ class Product extends dbase implements JsonSerializable
 		return $this->qtyRequested;
 	}
 
+	//Insert a new product into the database
 	function addNewProduct(){
-        $sqltable = "PRODUCT";
-        $query = "INSERT INTO $sqltable (ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-					VALUES ('$this->prodgroupid', '$this->name', '$this->price', '$this->qtyOnHand', '$this->qtySold', '$this->qtyToOrder', '$this->qtyRequested')";
+        $sqltable = "Product";
+        $query = "INSERT INTO $sqltable (ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+					VALUES ('$this->prodgroupid', '$this->name', '$this->price', '$this->qtyOnHand', '$this->qtySold', '$this->qtyToOrder', '$this->qtyRequested', 0)";
         $result = $this->WriteDelDbase($sqltable, $query);
         return $result;
   	}
 
-  	  //function to Update the qtyOnHand & QtySold numbers after a sale.
-    function updateProductData($qtyChange){
+  	//Update all details of the product in the database
+    function updateProduct(){
         $sqltable = "Product";
         $query = "UPDATE $sqltable SET ".
-        	"QuantityOnHand = QuantityOnHand - $qtyChange, ".
-        	"QuantitySold = QuantitySold + $qtyChange ".
-        	"WHERE ID = $this->id";
+        	"ProductGroupId = $this->prodgroupid, ".
+        	"Name = '$this->name', ".
+        	"Price = $this->price, ".
+        	"QuantityOnHand = $this->qtyOnHand, ".
+        	"QuantitySold = $this->qtySold, ".
+        	"QuantityToOrder = $this->qtyToOrder, ".
+        	"QuantityRequested = $this->qtyRequested ".
+        	"WHERE Id = $this->id";
         
         $result = $this->WriteDelDbase($sqltable, $query);
+        return $result;
+    }
+
+    //Mark a product as hidden
+    function deleteProduct(){
+    	$sqltable = "Product";
+
+    	$query ="UPDATE $sqltable SET IsHidden = 1 WHERE Id = $this->id";
+    	$result = $this->WriteDelDbase($sqltable, $query);
+    	return $result;
     }
 
   	//Given a row from the database representing a product, construct a product and return it.
@@ -150,6 +174,10 @@ class Product extends dbase implements JsonSerializable
 		$newProduct->setQtySold($dbRow['QuantitySold']);
 		$newProduct->setQtyToOrder($dbRow['QuantityToOrder']);
 		$newProduct->setQtyRequested($dbRow['QuantityRequested']);
+		$newProduct->setProdGroupID($dbRow['ProductGroupId']);
+		if (array_key_exists(('ProductGroupName'), $dbRow)){
+			$newProduct->setProductGroupName($dbRow['ProductGroupName']);
+		}
 
 		return $newProduct;
 	}
@@ -163,7 +191,9 @@ class Product extends dbase implements JsonSerializable
 			'quantityOnHand' => $this->getQtyOnHand(),
 			'quantitySold' => $this->getQtySold(),
 			'quantityToOrder' => $this->getQtyToOrder(),
-			'quantityRequested' => $this->getQtyRequested()
+			'quantityRequested' => $this->getQtyRequested(),
+			'productGroupId' => $this->getProdGroupID(),
+			'productGroupName' => $this->getProductGroupName()
 		];
 	}
 }

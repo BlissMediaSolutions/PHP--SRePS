@@ -363,79 +363,114 @@ app.controller('ProductController', function($scope, $http) {
         {'Id':5, 'Name':'Weight loss'},
         {'Id':6, 'Name':'Dental care'}];
 
-    // Tab View Buttons
-    $scope.buttonView = true;
+    //What to display
+    $scope.showAllProducts = true;
+    $scope.addEditTab = false;
 
-    // Tab Views
-    $scope.addTab = false;
-    $scope.editTab = false;
-    $scope.deleteTab = false;
-
-    // Edit View ng-show booleans
-    $scope.hasProduct = false;
-
-    // Add Variables
-    $scope.addName;
-    $scope.addGroup;
-    $scope.addPrice;
-
-    // Edit Variables
-    $scope.editName;
-    $scope.editGroup;
-    $scope.editPrice;
-
-    // Delete Varaibles
+    var productController = this;
 
     $scope.addButton = function() {
-        $scope.addTab = true;
-        $scope.editTab = false;
-        $scope.deleteTab = false;
+        $scope.addEditTab = true;
+        $scope.showAllProducts = false;
+        
+        $scope.product = {
+            id: 0,
+            name: null,
+            productGroupId: null,
+            price: 0.00,
+            quantityOnHand: 0
+        };
 
-        $scope.buttonView = false;
+        $scope.addEditLabel = "Add";
     }
 
-    $scope.editButton = function() {
-        $scope.addTab = false;
-        $scope.editTab = true;
-        $scope.deleteTab = false; 
+    $scope.editProduct = function(product) {
+        $scope.addEditTab = true;
+        $scope.showAllProducts = false;
 
-        $scope.buttonView = false;
+        $scope.product = {
+            id: product.id,
+            name: product.name,
+            productGroupId: product.productGroupId,
+            price: product.price,
+            quantityOnHand: parseInt(product.quantityOnHand)
+        };
+
+        //Select correct product group
+        for (var i = 0; i < $scope.productGroups.length; i++){
+            if ($scope.productGroups[i].Id == product.productGroupId){
+                $scope.productGroup = $scope.productGroups[i];
+                break;
+            }
+        }
+
+        $scope.addEditLabel = "Update";
     }
 
-    $scope.deleteButton = function() {
-        $scope.addTab = false;
-        $scope.editTab = false;
-        $scope.deleteTab = true; 
-
-        $scope.buttonView = false;
-    }
-
-    $scope.returnButton = function() {
+    $scope.return = function() {
         // Tab view reset
-        $scope.addTab = false;
-        $scope.editTab = false;
-        $scope.deleteTab = false; 
-
-        // Tab view Button reset
-        $scope.buttonView = true;
-
-        // Has Product reset
-        $scope.hasProduct = false;
+        $scope.addEditTab = false;
+        $scope.showAllProducts = true;
+        productController.refreshProducts();
     }
 
-    $scope.getProductToEdit = function () {
-        // will contain PHP
-        // Needs to retrieve data to fill form.
-        $scope.hasProduct = true;
-    }
+    //After the user has added/edited a product, call the backend to commit this to the database
+    $scope.addEditProduct = function() {
+        //Populate the product group Id
+        $scope.product.productGroupId = $scope.productGroup.Id;
+        $http({
+            url: './php/AddEditProduct.php',
+            method: 'GET',
+            params: {
+                'ProductId' : $scope.product.id,
+                'ProductGroupId' : $scope.product.productGroupId,
+                'Name' : $scope.product.name,
+                'Price' : $scope.product.price,
+                'QuantityOnHand' : $scope.product.quantityOnHand
+            }
+        })
+        .then(function successCallback(response){
+            $scope.return();
+        });
+    };
 
-    $scope.productEditBack = function () {
-        $scope.hasProduct = false;
-        $scope.editName = "";
-    }
+    //Delete a specified product if the user confirms this is what they want to do
+    $scope.deleteProduct = function(productId){
+        bootbox.confirm("Delete this product?", function(result){
+            if (!result) return;
+            $http({
+                url: './php/DeleteProduct.php',
+                method: 'GET',
+                params: {
+                    'ProductId' : productId
+                }
+            })
+            .then(function successCallback(response){
+                //Product has been deleted from the database. Stop displaying it.
+                for (var i = 0; i < $scope.products.length; i++){
+                    if ($scope.products[i].id == productId){
+                        $scope.products.splice(i, 1);
+                        break;
+                    }
+                }
+            });
+        })
+    };
 
-    $scope.productEditSubmit = function () {
-        // Will contain PHP
-        // Needs to send new data
-    }
+    //Refresh the list of products
+    this.refreshProducts = function(){
+        $http({
+            url: './php/GetProducts.php',
+            method: 'GET'
+        })
+        .then(function successCallback(response){
+            $scope.products = response.data;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.products = [];
+        });
+    };
+
+    //Show products straight away
+    this.refreshProducts();
 });
