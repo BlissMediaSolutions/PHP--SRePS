@@ -4,14 +4,37 @@
     </div>
     <div class="row">
     	<div class="col-sm-12 reportBox">
-    		<!-- TAB SELECT -->
-			<div class="row " ng-show="buttonView">
-				<div class="col-sm-12 selectTab">
-					<h2 class="tabTitle">Products</h2>
-					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="addButton()">Add Product</button><br>
-					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="editButton()">Edit Product</button><br>
-					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="deleteButton()">Delete Product</button><br>
-				</div>
+			<!--PRODUCT GRID-->
+			<div ng-show="showAllProducts" class="scrollable">
+				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="addButton()">Add Product</button>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Product Group</th>
+							<th>Product</th>
+							<th>Price</th>
+							<th>Quantity on hand</th>
+							<th>Quantity sold</th>
+							<th>Quantity to order</th>
+							<th>Quantity requested</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="product in products">
+							<td>{{product.productGroupName}}</td>
+							<td>{{product.name}}</td>
+							<td>{{product.price}}</td>
+							<td>{{product.quantityOnHand}}</td>
+							<td>{{product.quantitySold}}</td>
+							<td>{{product.quantityToOrder}}</td>
+							<td>{{product.quantityRequested}}</td>
+							<td><a ng-href="./#/products/{{product.id}}">Edit</a></td>
+							<td class="btn" ng-click="deleteProduct(product.id)">X</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
 			<!-- ADD TAB -->

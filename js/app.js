@@ -363,8 +363,8 @@ app.controller('ProductController', function($scope, $http) {
         {'Id':5, 'Name':'Weight loss'},
         {'Id':6, 'Name':'Dental care'}];
 
-    // Tab View Buttons
-    $scope.buttonView = true;
+    //All products display
+    $scope.showAllProducts = true;
 
     // Tab Views
     $scope.addTab = false;
@@ -391,23 +391,7 @@ app.controller('ProductController', function($scope, $http) {
         $scope.editTab = false;
         $scope.deleteTab = false;
 
-        $scope.buttonView = false;
-    }
-
-    $scope.editButton = function() {
-        $scope.addTab = false;
-        $scope.editTab = true;
-        $scope.deleteTab = false; 
-
-        $scope.buttonView = false;
-    }
-
-    $scope.deleteButton = function() {
-        $scope.addTab = false;
-        $scope.editTab = false;
-        $scope.deleteTab = true; 
-
-        $scope.buttonView = false;
+        $scope.showAllProducts = false;
     }
 
     $scope.returnButton = function() {
@@ -416,8 +400,9 @@ app.controller('ProductController', function($scope, $http) {
         $scope.editTab = false;
         $scope.deleteTab = false; 
 
-        // Tab view Button reset
-        $scope.buttonView = true;
+        // Show all products again
+        $scope.showAllProducts = true;
+        this.refreshProducts();
 
         // Has Product reset
         $scope.hasProduct = false;
@@ -438,4 +423,21 @@ app.controller('ProductController', function($scope, $http) {
         // Will contain PHP
         // Needs to send new data
     }
+
+    //Refresh the list of products
+    this.refreshProducts = function(){
+        $http({
+            url: './php/GetProducts.php',
+            method: 'GET'
+        })
+        .then(function successCallback(response){
+            $scope.products = response.data;
+        }, function errorCallback(response){
+            //Ooops! figure out what to do here...
+            $scope.products = [];
+        });
+    };
+
+    //Show products straight away
+    this.refreshProducts();
 });

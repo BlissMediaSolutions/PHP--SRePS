@@ -7,10 +7,10 @@ include_once('dbase.php');
 
 class Product extends dbase implements JsonSerializable
 {
-
   	/* Class variables */
 	private $id;
 	private $prodgroupid;
+	private $productGroupName;
 	private $name;
 	private $price;
 	private $qtyOnHand;
@@ -70,6 +70,14 @@ class Product extends dbase implements JsonSerializable
 
 	function getProdGroupID(){
 		return $this->prodgroupid;
+	}
+
+	function setProductGroupName($par){
+		$this->productGroupName = $par;
+	}
+
+	function getProductGroupName(){
+		return $this->productGroupName;
 	}
 
 	function setName($par){
@@ -150,6 +158,9 @@ class Product extends dbase implements JsonSerializable
 		$newProduct->setQtySold($dbRow['QuantitySold']);
 		$newProduct->setQtyToOrder($dbRow['QuantityToOrder']);
 		$newProduct->setQtyRequested($dbRow['QuantityRequested']);
+		if (array_key_exists(('ProductGroupName'), $dbRow)){
+			$newProduct->setProductGroupName($dbRow['ProductGroupName']);
+		}
 
 		return $newProduct;
 	}
@@ -163,7 +174,8 @@ class Product extends dbase implements JsonSerializable
 			'quantityOnHand' => $this->getQtyOnHand(),
 			'quantitySold' => $this->getQtySold(),
 			'quantityToOrder' => $this->getQtyToOrder(),
-			'quantityRequested' => $this->getQtyRequested()
+			'quantityRequested' => $this->getQtyRequested(),
+			'productGroupName' => $this->getProductGroupName()
 		];
 	}
 }
