@@ -25,6 +25,7 @@ CREATE TABLE Product(
     QuantitySold int NOT NULL,
     QuantityToOrder int NOT NULL,
     QuantityRequested int NOT NULL,
+    IsHidden bit NOT NULL,
     CONSTRAINT FK_Product_ProductGroup FOREIGN KEY (ProductGroupId) REFERENCES ProductGroup(Id)
 );
 
@@ -187,33 +188,33 @@ INSERT INTO ProductGroup(Name) VALUES('Fragrances');
 INSERT INTO ProductGroup(Name) VALUES('Weight loss');
 INSERT INTO ProductGroup(Name) VALUES('Dental care');
 
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Panadol 500mg 100 tablets', 9.99, 400, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Panadol 500mg 50 tablets', 6.99, 250, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Panadol Rapid 20 tablets', 4.49, 382, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Nurofen 200mg 96 tablets', 15.99, 382, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Nurofen for Children 1-5 Years Strawberry', 17.99, 37, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Prescription drugs'), 'Lipitor 20mg Tablets 30', 6.99, 21, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Prescription drugs'), 'Plavix 75mg Tablets 28 (a)', 7.29, 3, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Vitamins'), 'Swisse Ultiboost Calcium + Vitamin D', 13.00, 421, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Vitamins'), 'Herron Osteo Eze Active Plus MSM 120 Tablets', 40.83, 21, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Fragrances'), 'Marc Jacobs Daisy Eau de Toilette 100ml Spray', 65.20, 10, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Fragrances'), 'Calvin Klein CK One 200ml Eau de Toilette Spray', 37.99, 21, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Weight loss'), 'OptiSlim VLCD Bar Choc Fudge 5 Pack', 15.50, 35, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Weight loss'), 'Optislim VLCD Bars Variety 60g 15 Pack', 15.50, 45, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested) 
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Dental care'), 'Colgate Toothpaste Regular Flavour 250g', 3.20, 40, 0, 0, 0);
-INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Dental care'), 'Colgate Toothpaste Total 190g', 5.55, 50, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Panadol 500mg 100 tablets', 9.99, 400, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Panadol 500mg 50 tablets', 6.99, 250, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Panadol Rapid 20 tablets', 4.49, 382, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Nurofen 200mg 96 tablets', 15.99, 382, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Painkillers'), 'Nurofen for Children 1-5 Years Strawberry', 17.99, 37, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Prescription drugs'), 'Lipitor 20mg Tablets 30', 6.99, 21, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Prescription drugs'), 'Plavix 75mg Tablets 28 (a)', 7.29, 3, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Vitamins'), 'Swisse Ultiboost Calcium + Vitamin D', 13.00, 421, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Vitamins'), 'Herron Osteo Eze Active Plus MSM 120 Tablets', 40.83, 21, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Fragrances'), 'Marc Jacobs Daisy Eau de Toilette 100ml Spray', 65.20, 10, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Fragrances'), 'Calvin Klein CK One 200ml Eau de Toilette Spray', 37.99, 21, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Weight loss'), 'OptiSlim VLCD Bar Choc Fudge 5 Pack', 15.50, 35, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Weight loss'), 'Optislim VLCD Bars Variety 60g 15 Pack', 15.50, 45, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden) 
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Dental care'), 'Colgate Toothpaste Regular Flavour 250g', 3.20, 40, 0, 0, 0, 0);
+INSERT INTO Product(ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+VALUES((SELECT Id FROM ProductGroup WHERE Name = 'Dental care'), 'Colgate Toothpaste Total 190g', 5.55, 50, 0, 0, 0, 0);

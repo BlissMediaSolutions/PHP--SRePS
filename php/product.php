@@ -122,8 +122,8 @@ class Product extends dbase implements JsonSerializable
 
 	function addNewProduct(){
         $sqltable = "PRODUCT";
-        $query = "INSERT INTO $sqltable (ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested)
-					VALUES ('$this->prodgroupid', '$this->name', '$this->price', '$this->qtyOnHand', '$this->qtySold', '$this->qtyToOrder', '$this->qtyRequested')";
+        $query = "INSERT INTO $sqltable (ProductGroupId, Name, Price, QuantityOnHand, QuantitySold, QuantityToOrder, QuantityRequested, IsHidden)
+					VALUES ('$this->prodgroupid', '$this->name', '$this->price', '$this->qtyOnHand', '$this->qtySold', '$this->qtyToOrder', '$this->qtyRequested', 0)";
         $result = $this->WriteDelDbase($sqltable, $query);
         return $result;
   	}
