@@ -95,13 +95,13 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
         $scope.sale.qty = qty;
         $scope.sale.cost = parseFloat(product.price)*parseFloat(qty);
         $scope.sale.productId = product.id;
-        
+
         if ($scope.itemEditing != null){
             $scope.itemEditing = null;
         }
         else{
             $scope.itemArray.push($scope.sale);
-        } 
+        }
         salesController.updateTotalPrice();
         $scope.addButtonText = 'Add';
     }
@@ -236,7 +236,7 @@ app.controller('ReportController', function($scope, $http) {
     $scope.hideTable = true;
 
     // Set up sales array for population.
-    $scope.salesArray = []; 
+    $scope.salesArray = [];
 
     // Date for naming CSV reports.
     $scope.startDate = {value: new Date()};
@@ -280,7 +280,7 @@ app.controller('ReportController', function($scope, $http) {
     $scope.destroySalesArray = function () {
         $scope.salesArray = [];
     }
-    
+
     $scope.returnToSelect = function () {
         // Show select screen.
         $scope.selectHidden = false;
@@ -345,6 +345,15 @@ app.controller('PredictionController', function($scope, $http) {
     $scope.getPredictions = function () {
         $scope.predictionHide = false;
         // PHP GET HERE
+        $http({
+            url: './php/Order.php',
+            method: 'GET',
+        })
+        //.then(function successCallback(response){
+        //    $scope.productArray = response.data;
+        //}
+
+
     }
 
     // For testing purposes, will delete later.
@@ -372,7 +381,7 @@ app.controller('ProductController', function($scope, $http) {
     $scope.addButton = function() {
         $scope.addEditTab = true;
         $scope.showAllProducts = false;
-        
+
         $scope.product = {
             id: 0,
             name: null,
