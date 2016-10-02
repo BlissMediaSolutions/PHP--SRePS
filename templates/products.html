@@ -5,9 +5,9 @@
     <div class="row">
     	<div class="col-sm-12 reportBox">
 			<!--PRODUCT GRID-->
-			<div ng-show="showAllProducts" class="scrollable">
+			<div ng-show="showAllProducts">
 				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="addButton()">Add Product</button>
-				<table class="table table-striped">
+				<table class="table table-striped scrollable">
 					<thead>
 						<tr>
 							<th>Product Group</th>
@@ -39,19 +39,26 @@
 
 			<!-- ADD/EDIT TAB -->
 			<div class="container productTab" ng-show="addEditTab">
-				<div class="form-group">
+				<form class="form-group" name="productForm">
 			   		<label for="pName">Product Name:</label><br>
-			   		<input type="text" class="form-control" id="pName" ng-model="product.name">
+			   		<input type="text" name="productName" class="form-control" id="pName" ng-model="product.name" required>
+			   		<span ng-show="productForm.productName.$touched && productForm.productName.$error.required">The name is required</span><br>
 
 			   		<label for="pGroup">Product Group:</label><br>
-			   		<select class="form-control" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups"></select>
+			   		<select class="form-control" name="productGroup" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" required></select><br>
 
 			   		<label for="pPrice">Product Price:</label><br>
-			   		<input type="text" class="form-control" id="pPrice" ng-model="product.price">
+			   		<input type="number" class="form-control" name="productPrice" id="pPrice" ng-model="product.price" required>
+			   		<span ng-show="product.price < 0">The price cannot be less than 0</span>
+			   		<span ng-show="product.price == 0">Are you sure you want to set the price to 0?</span><br>
+
 
 			   		<label for="pQuantityOnHand">Quantity On Hand:</label><br>
-			   		<input type="number" class="form-control" id="pQuantityOnHand" ng-model="product.quantityOnHand">
-				</div>
+			   		<input type="number" class="form-control"  id="pQuantityOnHand" ng-model="product.quantityOnHand" required>
+			   		<span ng-show="product.quantityOnHand < 0">Quantity must be greater than 0</span><br>
+			   		
+
+				</form>
 
 				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="return()">Return</button>
 
