@@ -7,7 +7,7 @@
 
    $orderPredict = new Sale('1');
 
-   $sqlstring = "SELECT Product.ProductGroupId, Product.Id, Product.Name, ".
+   $sqlstring = "SELECT Product.ProductGroupId, ProductGroup.Name ProductGroup, Product.Id, Product.Name, ".
                 "SUM(CASE WHEN Sale.SaleDateTime <= CURDATE() ".
                     "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 7 DAY) THEN SaleLine.Quantity ELSE 0 END) AS LastWeek, ".
                 "SUM(CASE WHEN Sale.SaleDateTime <= (CURDATE() - INTERVAL 7 DAY) ".
@@ -16,9 +16,12 @@
                     "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 21 DAY) THEN SaleLine.Quantity ELSE 0 END) AS ThreeWeeksAgo, ".
                 "SUM(CASE WHEN Sale.SaleDateTime <= (CURDATE() - INTERVAL 21 DAY) ".
                     "AND Sale.SaleDateTime > (CURDATE() - INTERVAL 28 DAY) THEN SaleLine.Quantity ELSE 0 END) AS FourWeeksAgo, ".
-                "CEIL(SUM(CASE WHEN Sale.SaleDateTime > (CURDATE() - INTERVAL 28 DAY) THEN SaleLine.Quantity / 4 ELSE 0 END)) AS REC_STOCK_LEVEL, ".
-                    "Product.QuantityOnHand AS QTY_ON_HAND ".
-                "FROM Sale JOIN SaleLine ON Sale.ID = SaleLine.SaleId RIGHT OUTER JOIN Product ON SaleLine.ProductId = Product.Id ".
+                "CEIL(SUM(CASE WHEN Sale.SaleDateTime > (CURDATE() - INTERVAL 28 DAY) THEN SaleLine.Quantity / 4 ELSE 0 END)) AS RecommendedStockLevel, ".
+                    "Product.QuantityOnHand AS QuantityOnHand ".
+                "FROM Sale ".
+                "JOIN SaleLine ON Sale.ID = SaleLine.SaleId ".
+                "RIGHT OUTER JOIN Product ON SaleLine.ProductId = Product.Id ".
+                "LEFT OUTER JOIN ProductGroup ON ProductGroup.Id = Product.ProductGroupId ".
                 "WHERE Product.IsHidden = 0 ".
                     "GROUP BY Product.ProductGroupId, Product.Id, Product.Name ".
                     "ORDER BY Product.ProductGroupId, Product.Id";

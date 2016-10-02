@@ -323,6 +323,43 @@ app.controller('ReportController', function($scope, $http) {
     }
 });
 
+app.filter('quantityToOrder', function(){
+    return function(product){
+        var rec = product.RecommendedStockLevel - product.QuantityOnHand;
+        if (rec < 0)
+            return 0;
+        return rec;
+    }
+});
+
+app.filter('lastFourWeeks', function(){
+    var padRight5 = function(s){
+        if (s.length >= 5)
+            return s;
+        for (var i = s.length - 1; i < 5; i++){
+            s += "&nbsp;";
+        }
+        return s;
+    };
+
+    return function(product){
+        var result = padRight5(product.FourWeeksAgo) + 
+                     padRight5(product.ThreeWeeksAgo) +
+                     padRight5(product.TwoWeeksAgo) + 
+                     product.LastWeek;
+        return result;
+
+
+        // var fourWeeksAgoSales = ("     " + product.FourWeeksAgo).slice(-5);
+        // var threeWeeksAgoSales = ("     " + product.ThreeWeeksAgo).slice(-5);
+        // var twoWeeksAgoSales = ("     " + product.TwoWeeksAgo).slice(-5);
+        // var lastWeekSales = ("     " + product.LastWeek).slice(-5);
+
+        // var result = fourWeeksAgoSales + threeWeeksAgoSales + twoWeeksAgoSales + lastWeekSales;
+        // return result;
+    }
+});
+
 app.controller('PredictionController', function($scope, $http) {
     // PHP call to fill 'product' array.
     // Each product object containing information about the product, particularly the average quanitity sold + quantity on hand.
@@ -334,11 +371,6 @@ app.controller('PredictionController', function($scope, $http) {
     // Create Array.
     $scope.productArray = [];
 
-    // Function to add product to array
-    $scope.addProduct = function(name, group, price, saleAvg, qtyOnHand) {
-        $scope.productArray.push({'name':name, 'productGroup':group, 'price':price, 'averageSales':saleAvg, 'quantityOnHand':qtyOnHand, 'quantityToOrder':(saleAvg - qtyOnHand)});
-    }
-
     // Will impliement the PHP to retrieve all of the products & their data.
     // Using the 'addProduct' function to add each product to the array.
     // The array is updated and 'unhidden' on this function call.
@@ -347,19 +379,12 @@ app.controller('PredictionController', function($scope, $http) {
         // PHP GET HERE
         $http({
             url: './php/Order.php',
-            method: 'GET',
+            method: 'GET'
         })
-        //.then(function successCallback(response){
-        //    $scope.productArray = response.data;
-        //}
-
-
-    }
-
-    // For testing purposes, will delete later.
-    $scope.add = function() {
-        $scope.addProduct('test', 'testgroup', 25, 5, 2);
-    }
+        .then(function successCallback(response){
+           $scope.productArray = response.data;
+        });
+    };
 });
 
 app.controller('ProductController', function($scope, $http) {
