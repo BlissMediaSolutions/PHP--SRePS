@@ -39,31 +39,40 @@
 
 			<!-- ADD/EDIT TAB -->
 			<div class="container productTab" ng-show="addEditTab">
-				<form class="form-group" name="productForm">
+				<form novalidate class="form-group" name="productForm" ng-submit="productForm.$valid && addEditProduct()">
 			   		<label for="pName">Product Name:</label><br>
-			   		<input type="text" name="productName" class="form-control" id="pName" ng-model="product.name" required>
-			   		<span ng-show="productForm.productName.$touched && productForm.productName.$error.required">The name is required</span><br>
+			   		<input type="text" name="productName" class="form-control" id="pName" ng-model="product.name" ng-pattern="/^[^']*$/" required>
+			   		<span class="validationError" ng-show="(productForm.productName.$touched || productForm.$submitted) && productForm.productName.$error.required">The name is required</span>
+			   		<span class="validationError" ng-show="productForm.productName.$error.pattern">The name contains invalid characters</span>
+			   		<br/>
 
 			   		<label for="pGroup">Product Group:</label><br>
-			   		<select class="form-control" name="productGroup" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" required></select><br>
+			   		<select class="form-control" name="productGroup" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" required></select>
+			   		<span class="validationError" ng-show="(productForm.productGroup.$touched || productForm.$submitted) && productForm.productGroup.$error.required">The product group is required</span>
+			   		<br/>
 
 			   		<label for="pPrice">Product Price:</label><br>
-			   		<input type="number" class="form-control" name="productPrice" id="pPrice" ng-model="product.price" required>
-			   		<span ng-show="product.price < 0">The price cannot be less than 0</span>
-			   		<span ng-show="product.price == 0">Are you sure you want to set the price to 0?</span><br>
+			   		<input type="number" class="form-control" name="productPrice" id="pPrice" ng-model="product.price" ng-min="0" required>
+			   		<span class="validationError" ng-show="(productForm.productPrice.$touched || productForm.$submitted) && productForm.productPrice.$error.required">The price is required</span>
+			   		<span class="validationError" ng-show="productForm.productPrice.$error.min">The price cannot be less than 0</span>
+			   		<span ng-show="product.price == 0">Are you sure you want to set the price to 0?</span>
+			   		<span class="validationError" ng-show="productForm.productPrice.$error.number">Price must be a number</span>
+			   		<br/>
 
 
 			   		<label for="pQuantityOnHand">Quantity On Hand:</label><br>
-			   		<input type="number" class="form-control"  id="pQuantityOnHand" ng-model="product.quantityOnHand" required>
-			   		<span ng-show="product.quantityOnHand < 0">Quantity must be greater than 0</span><br>
+			   		<input type="number" class="form-control"  id="pQuantityOnHand" ng-model="product.quantityOnHand" ng-min="0" ng-pattern="/^-?[0-9]+$/" name="pQuantityOnHand" required>
+			   		<span class="validationError" ng-show="(productForm.pQuantityOnHand.$touched || productForm.$submitted) && productForm.pQuantityOnHand.$error.required">Quantity is required</span>
+			   		<span class="validationError" ng-show="productForm.pQuantityOnHand.$error.min">Quantity must be at least 0</span>
+			   		<span class="validationError" ng-show="productForm.pQuantityOnHand.$error.pattern">Quantity must be a whole number</span>
+			   		<span class="validationError" ng-show="productForm.pQuantityOnHand.$error.number">Quantity must be a whole number</span>
+			   		<br/>
 			   		
+			   		<button type="button" class="btn btn-default btn-lg tabButton" ng-click="return()">Return</button>
 
+					<!-- Triggers PHP to INSERT new product? -->
+					<button type="submit" class="btn btn-default btn-lg tabButton">{{addEditLabel}}</button>
 				</form>
-
-				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="return()">Return</button>
-
-				<!-- Triggers PHP to INSERT new product? -->
-				<button type="button" class="btn btn-default btn-lg tabButton" ng-click="addEditProduct()">{{addEditLabel}}</button>
 			</div>
     	</div>
     </div>
