@@ -11,22 +11,28 @@
     	</div>
     	<!-- INPUT FORM -->
     	<div class="col-sm-6 formColumn">
-    		<div class="form-group">
-			    <label for="pGroup">Product Group:</label>
-			    <select class="form-control" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)"></select>
-			</div>
 		<!-- OUTPUT VIEW -->
-			<form name="saleForm" class="form-group" ng-show="gSelected">
-			    <!--  -->
-			    <label for="product">Product:</label>
-			    <select class="form-control" id="product" ng-model="product" ng-options="product.name for product in products"></select>
+			<form name="saleForm" class="form-group">
+                <div class="form-group">
+                    <label for="pGroup">Product Group:</label>
+                    <select class="form-control" id="pGroup" name="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)" required></select>
+                </div>
+			    
+                <div ng-show="gSelected">
+    			    <label for="product">Product:</label>
+    			    <select class="form-control" id="product" name="product" ng-model="product" ng-options="product.name for product in products" required></select>
+                    <span class="validationError" ng-show="saleForm.$submitted && saleForm.product.$error.required">This field is required!</span>
+                    <br/>
 
-			    <label for="qty">Quantity:</label>
-			    <input type="text" name="saleQty" class="form-control" id="qty" ng-model="qty" ng-pattern="/^[0-9]*$/" required="">
-				    <span ng-show="saleForm.saleQty.$error.pattern">Not a valid number!</span><br>
-	   				<span ng-show="saleForm.saleQty.$touched && saleForm.saleQty.$error.required">This field is required!</span><br>
+    			    <label for="qty">Quantity:</label>
+    			    <input type="number" name="saleQty" class="form-control" id="qty" ng-model="qty" ng-pattern="/^[0-9]*$/" ng-max="{{product.quantityOnHand}}" required>
+    				    <span class="validationError" ng-show="saleForm.saleQty.$error.pattern || saleForm.saleQty.$error.number">Not a valid number!</span>
+    	   				<span class="validationError" ng-show="(saleForm.saleQty.$touched || saleForm.$submitted) && saleForm.saleQty.$error.required">This field is required!</span>
+                        <span class="validationError" ng-show="saleForm.saleQty.$error.ngMax">Only {{product.quantityOnHand}} in stock!</span>
+                        <br/>
 
-			    <button type="button" class="btn btn-default btn-lg" ng-click="createSaleItem(product, qty)">{{addButtonText}}</button>
+    			    <button type="submit" class="btn btn-default btn-lg" ng-click="saleForm.$valid && createSaleItem(product, qty)">{{addButtonText}}</button>
+                </div>
 			</form>
     	</div>
     	<!-- impliment second set for xs devices -->
