@@ -30,26 +30,7 @@ abstract class dbase
             return true;
         }
     }
-
-    //function to return the last created SaleID, ProductID etc;
-    function GetLastID($sqltable, $query)
-    {
-        require("settings.php");
-        $conn = mysqli_connect($host, $user, $pwd, $sql_db);
-        if (!$conn)
-        {
-            return false;
-        } else {
-            $result = mysql_query($conn, $query);
-            //return $result;
-        }
-        mysqli_close($conn);
-        if ($result) {
-            return false;
-        }
-        return $result;
-     }
-
+  
      //function which performs a Dbase query based on the SQL String ($par) passed & returns the results as JSON.
      function GetData($par)
      {
