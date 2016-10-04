@@ -104,6 +104,7 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
         }
         salesController.updateTotalPrice();
         $scope.addButtonText = 'Add';
+        salesController.resetSaleLineForm();
     }
 
     $scope.maxPage = function () {
@@ -124,6 +125,7 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
     };
 
     $scope.cancelSale = function() {
+        salesController.resetSaleLineForm();
         $scope.itemArray = [];
         $scope.totalPrice = 0.0;
         $location.path('/sales');
@@ -137,9 +139,8 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
             data: data
         })
         .then(function successCallback(response){
-            $scope.itemArray = [];
-            $scope.totalPrice = 0.0;
-            $location.path('/sales');
+            $scope.cancelSale();
+            salesController.resetSaleLineForm();
         }, function errorCallback(response){
             //Ooops! figure out what to do here...
         });
@@ -213,6 +214,14 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
             //Ooops! figure out what to do here...
             $scope.itemArray = [];
         });
+    };
+
+    this.resetSaleLineForm = function(){
+        $scope.productGroup = null;
+        $scope.product = null;
+        $scope.products = null;
+        $scope.gSelected = false;
+        $scope.qty = null;
     };
 
     $scope.readyPage();
