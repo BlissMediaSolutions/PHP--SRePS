@@ -14,6 +14,7 @@
 		<!-- OUTPUT VIEW -->
 			<form name="saleForm" class="form-group">
                 <div class="form-group">
+                	<p ng-show="!gSelected && addSelected">Please select a product group to start.</p>
                     <label for="pGroup">Product Group:</label>
                     <select class="form-control" id="pGroup" name="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)" required></select>
                 </div>
@@ -30,7 +31,7 @@
     	   				<span class="validationError" ng-show="(saleForm.saleQty.$touched || saleForm.$submitted) && saleForm.saleQty.$error.required">This field is required!</span>
                         <span class="validationError" ng-show="saleForm.saleQty.$error.ngMax">Only {{product.quantityOnHand}} in stock!</span>
                         <br/>
-
+                        <p>Click to add product(s) to sale.</p>
     			    <button type="submit" class="btn btn-default btn-lg" ng-click="saleForm.$valid && createSaleItem(product, qty)">{{addButtonText}}</button>
                 </div>
 			</form>
@@ -38,10 +39,10 @@
     	<!-- impliment second set for xs devices -->
     	<div class="col-sm-4 outputTab">
     		<div>
-    			<h2>Overview:</h2>
+    			<h2>Sale Review:</h2>
     			<div class="table-responsive">
                     <table class="table table-striped table-hover table-condensed">
-                        <caption>Unit Details</caption>
+                        <caption>Sale Details</caption>
                         <thead>
                             <tr>
                                 <th id="itemName">Name</th>
@@ -70,6 +71,7 @@
     		</div>
     		<div>
     			<h2>Total: {{totalPrice | currency:"$"}}</h2>
+    			<p>Select <b>done</b> to process sale.</p>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-lg" ng-click="commitSale()">Done</button>
                     <button type="button" class="btn btn-default btn-lg" ng-click="cancelSale()">Cancel</button>
