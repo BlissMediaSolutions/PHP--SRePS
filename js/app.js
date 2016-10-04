@@ -104,6 +104,7 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
         }
         salesController.updateTotalPrice();
         $scope.addButtonText = 'Add';
+        salesController.resetSaleLineForm();
     }
 
     $scope.maxPage = function () {
@@ -124,6 +125,7 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
     };
 
     $scope.cancelSale = function() {
+        salesController.resetSaleLineForm();
         $scope.itemArray = [];
         $scope.totalPrice = 0.0;
         $location.path('/sales');
@@ -137,9 +139,8 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
             data: data
         })
         .then(function successCallback(response){
-            $scope.itemArray = [];
-            $scope.totalPrice = 0.0;
-            $location.path('/sales');
+            $scope.cancelSale();
+            salesController.resetSaleLineForm();
         }, function errorCallback(response){
             //Ooops! figure out what to do here...
         });
@@ -215,7 +216,47 @@ app.controller('SalesController', function($scope, $http, $routeParams, $locatio
         });
     };
 
+    this.resetSaleLineForm = function(){
+        $scope.productGroup = null;
+        $scope.product = null;
+        $scope.products = null;
+        $scope.gSelected = false;
+        $scope.qty = null;
+    };
+
     $scope.readyPage();
+});
+
+function isEmpty(value) {
+  return angular.isUndefined(value) || value === '' || value === null || value !== value;
+}
+
+//The default ng-max validation attribute with Angular doesn't allow you to bind to 
+//something in your Controller, this should fix it.
+//From http://jsfiddle.net/g/s5gKC/ accessed 4/10/2016
+app.directive('ngMax', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch(attr.ngMax, function(){
+                ctrl.$setViewValue(ctrl.$viewValue);
+            });
+            var maxValidator = function(value) {
+              var max = scope.$eval(attr.ngMax) || Infinity;
+              if (!isEmpty(value) && value > max) {
+                ctrl.$setValidity('ngMax', false);
+                return undefined;
+              } else {
+                ctrl.$setValidity('ngMax', true);
+                return value;
+              }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
+        }
+    };
 });
 
 app.filter('startFrom', function () {
