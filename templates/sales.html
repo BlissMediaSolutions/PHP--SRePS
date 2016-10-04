@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-    	<h1>Sales</h1>
+    	<h1>Sales</h1><p>To edit sales please navigate to <b>Sale Reports</b>.</p>
     </div>
     <div class="row">
     <!-- SIDE TABS -->
@@ -18,7 +18,7 @@
                     <label for="pGroup">Product Group:</label>
                     <select class="form-control" id="pGroup" name="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)" required></select>
                 </div>
-			    
+
                 <div ng-show="gSelected">
     			    <label for="product">Product:</label>
     			    <select class="form-control" id="product" name="product" ng-model="product" ng-options="product.name for product in products" required></select>
