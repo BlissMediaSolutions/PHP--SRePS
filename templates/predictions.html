@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="row">
+        <h1>Order Forecasting</h1>
+    </div>
+    <div class="row">
+    	<div class="col-sm-12 reportBox scrollable">
+    		<div class="row buttonContainer">
+				    <button type="button" class="btn btn-default btn-lg tabButton" ng-click="getPredictions()">Get Forecast</button>
+			</div>
+    	<div class="row" ng-hide="predictionHide">
+    		<div class="container">
+				<table class="table table-striped">
+					<thead>
+				     	 <tr>
+					        <th>Product Name</th>
+					        <th>Product Group</th>
+					        <th>Last four weeks</th>
+					        <th>Recommended Stock</th>
+					        <th>On Hand</th>
+					        <th>To Order</th>
+				      	</tr>
+			    	</thead>
+				    <tbody>
+			      		<tr ng-repeat="product in productArray">
+					        <td>{{product.Name}}</td>
+					        <td>{{product.ProductGroup}}</td>
+					        <td ng-bind-html="product | lastFourWeeks"></td>
+					        <td>{{product.RecommendedStockLevel}}</td>
+					        <td>{{product.QuantityOnHand}}</td>
+					        <td>{{product | quantityToOrder}}</td>
+				      	</tr>
+				    </tbody>
+		   		</table>
+			</div>
+    	</div>
+    	<div class="row">
+    	</div>
+    	<div class="row">
+    		<div class="row buttonContainer">
+		     		<!-- GET for generating CSV file. http://code.stephenmorley.org/php/creating-downloadable-csv-files/ -->
+				    <button type="button" class="btn btn-default btn-lg tabButton" ng-csv="productArray" filename="Predictions.csv" field-separator="," decimal-separator=".">Generate CSV</button>
+			</div>
+    	</div>
+    	</div>
+    </div>
+</div>

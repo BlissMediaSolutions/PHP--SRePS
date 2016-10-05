@@ -7,25 +7,26 @@
     		<!-- REPORT SELECT -->
 			<div class="row" ng-hide="selectHidden">
 				<div class="col-sm-12 selectTab">
-					<h2 class="tabTitle">Select report</h2>
+					<h2 class="tabTitle">Select Report</h2>
 					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="showWeekly()">Weekly Sales</button><br>
 					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="showMonthly()">Monthly Sales</button><br>
 					<button type="button" class="btn btn-default btn-lg tabButton" ng-click="showAll()">All Sales</button><br>
 				</div>
 			</div>
 
-			<div>
+			<div class="scrollable">
 				<div ng-switch="reportToShow" ng-animate="'slide'">
 					<!-- WEEKLY -->
 		    		<div class="row" ng-switch-when="1">
 		    			<div class="col-sm-12 reportTab">
 							<h2 class="tabTitle">Weekly Sales</h2>
+							<p class="tabTitle">Please generate report to view editable sales.</p>
 							<div class="row buttonContainer">
 							<label for="dateSelect">Week starting: </label>
 								<input type="date" id="dateSelect" class="hide-replaced" ng-model="startDate.value" />
 						     	<button type="button" class="btn btn-default btn-lg tabButton" ng-click="getWeeklySales()">Get Report</button>
 							</div>
-							<div class="row" ng-hide="hideTable">
+							<div class="row scrollable" ng-hide="hideTable">
 								<table class="table table-striped">
 								    <thead>
 								      <tr>
@@ -62,12 +63,13 @@
 		    		<div class="row" ng-switch-when="2">
 		    			<div class="col-sm-12 reportTab">
 							<h2 class="tabTitle">Monthly Sales</h2>
+							<p class="tabTitle">Please generate report to view editable sales.</p>
 							<div class="row buttonContainer">
 							<label for="dateSelect">Month starting: </label>
 								<input type="date" id="dateSelect" class="hide-replaced" ng-model="startDate.value" />
 						     	<button type="button" class="btn btn-default btn-lg tabButton" ng-click="getMonthlySales()">Get Report</button>
 							</div>
-							<div class="row" ng-hide="hideTable">
+							<div class="row scrollable" ng-hide="hideTable">
 								<table class="table table-striped">
 								    <thead>
 								      <tr>
@@ -104,10 +106,11 @@
 		    		<div class="row" ng-switch-when="3">
 		    			<div class="col-sm-12 reportTab">
 							<h2 class="tabTitle">All Sales</h2>
+							<p class="tabTitle">Please generate report to view editable sales.</p>
 							<div class="row buttonContainer">
 						     	<button type="button" class="btn btn-default btn-lg tabButton" ng-click="hideTable = false">Get Report</button>
 							</div>
-							<div class="row" ng-hide="hideTable">
+							<div class="row scrollable" ng-hide="hideTable">
 								<table class="table table-striped">
 								    <thead>
 								      <tr>

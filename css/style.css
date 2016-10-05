@@ -65,6 +65,28 @@ body {
   text-align: center;
 }
 
+.handbtn{
+  cursor:pointer;
+}
+
+.productTab {
+  width: 85%;
+}
+
+.scrollable{
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
+.validationError{
+  color: red;
+  font-size: 13px;
+}
+
+label{
+  font-size: 16px;
+}
+
 /*
 slide-enter-setup
 slide-leave-setup

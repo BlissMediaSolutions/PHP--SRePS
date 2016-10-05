@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-    	<h1>Sales</h1>
+    	<h1>Sales</h1><p>To edit sales please navigate to <b>Sale Reports</b>.</p>
     </div>
     <div class="row">
     <!-- SIDE TABS -->
@@ -11,32 +11,44 @@
     	</div>
     	<!-- INPUT FORM -->
     	<div class="col-sm-6 formColumn">
-    		<div class="form-group">
-			    <label for="pGroup">Product Group:</label>
-			    <select class="form-control" id="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)"></select>
-			</div>
 		<!-- OUTPUT VIEW -->
-			<div class="form-group" ng-show="gSelected">
-			    <!--  -->
-			    <label for="product">Product:</label>
-			    <select class="form-control" id="product" ng-model="product" ng-options="product.name for product in products"></select>
-			    <label for="qty">Quantity:</label>
-			    <input type="text" class="form-control" id="qty" ng-model="qty" pattern="^[0-9]*$">
-			    <button type="button" class="btn btn-default btn-lg" ng-click="createSaleItem(product, qty)">Add</button>
-			</div>
+			<form name="saleForm" class="form-group">
+                <div class="form-group">
+                	<p ng-show="!gSelected && addSelected">Please select a product group to start.</p>
+                    <label for="pGroup">Product Group:</label>
+                    <select class="form-control" id="pGroup" name="pGroup" ng-model="productGroup" ng-options="group.Name for group in productGroups" ng-change="groupSelect(productGroup.Id)" required></select>
+                </div>
+
+                <div ng-show="gSelected">
+    			    <label for="product">Product:</label>
+    			    <select class="form-control" id="product" name="product" ng-model="product" ng-options="product.name for product in products" required></select>
+                    <span class="validationError" ng-show="saleForm.$submitted && saleForm.product.$error.required">This field is required!</span>
+                    <br/>
+
+    			    <label for="qty">Quantity:</label>
+    			    <input type="number" name="saleQty" class="form-control" id="qty" ng-model="qty" ng-pattern="/^[0-9]*$/" ng-max="{{product.quantityOnHand}}" required>
+    				    <span class="validationError" ng-show="saleForm.saleQty.$error.pattern || saleForm.saleQty.$error.number">Not a valid number!</span>
+    	   				<span class="validationError" ng-show="(saleForm.saleQty.$touched || saleForm.$submitted) && saleForm.saleQty.$error.required">This field is required!</span>
+                        <span class="validationError" ng-show="saleForm.saleQty.$error.ngMax">Only {{product.quantityOnHand}} in stock!</span>
+                        <br/>
+                        <p>Click to add product(s) to sale.</p>
+    			    <button type="submit" class="btn btn-default btn-lg" ng-click="saleForm.$valid && createSaleItem(product, qty)">{{addButtonText}}</button>
+                </div>
+			</form>
     	</div>
     	<!-- impliment second set for xs devices -->
     	<div class="col-sm-4 outputTab">
     		<div>
-    			<h2>Overview:</h2>
+    			<h2>Sale Review:</h2>
     			<div class="table-responsive">
                     <table class="table table-striped table-hover table-condensed">
-                        <caption>Unit Details</caption>
+                        <caption>Sale Details</caption>
                         <thead>
                             <tr>
                                 <th id="itemName">Name</th>
-                                <th id="itemQty">Quantity</th>
+                                <th id="itemQty">Qty</th>
                                 <th id="itemCost">Cost</th>
+                                <th id="editItem"></th>
                                 <th id="deleteItem"></th>
                             </tr>
                         </thead>
@@ -45,6 +57,7 @@
                                 <td headers="itemName">{{item.name}}</td>
                                 <td headers="itemQty">{{item.qty}}</td>
                                 <td headers="itemCost">{{item.cost | currency:"$"}}</td>
+                                <td headers="editItem"><a class="handbtn" ng-click="editItem(itemArray.indexOf(item))">Edit</a></td>
                                 <td headers="deleteItem" class="btn" ng-click="deleteItem(itemArray.indexOf(item))">X</td>
                             </tr>
                         </tbody>
@@ -58,6 +71,7 @@
     		</div>
     		<div>
     			<h2>Total: {{totalPrice | currency:"$"}}</h2>
+    			<p>Select <b>done</b> to process sale.</p>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-lg" ng-click="commitSale()">Done</button>
                     <button type="button" class="btn btn-default btn-lg" ng-click="cancelSale()">Cancel</button>

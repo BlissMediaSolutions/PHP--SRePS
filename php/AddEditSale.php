@@ -47,12 +47,15 @@
         $saleLineToDelete->deleteSaleLine($conn);
     }
 
-    //Insert them into the database
+    //Insert new ones and update existing ones
     foreach ($saleLines as $saleLine){
         if ($saleLine->getId() > 0){
-            continue; //already in the database!
+            //Already in the database!
+            $saleLine->updateSaleLine($conn);
         }
-        $saleLine->addNewSaleLine($conn);
+        else{
+            $saleLine->addNewSaleLine($conn);
+        }
     }
     mysqli_close($conn);
 ?>
