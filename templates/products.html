@@ -22,7 +22,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="product in products">
+						<tr ng-repeat="product in products | orderBy:'name'">
 							<td>{{product.productGroupName}}</td>
 							<td>{{product.name}}</td>
 							<td>{{product.price}}</td>
@@ -67,11 +67,11 @@
 			   		<span class="validationError" ng-show="productForm.pQuantityOnHand.$error.pattern">Quantity must be a whole number</span>
 			   		<span class="validationError" ng-show="productForm.pQuantityOnHand.$error.number">Quantity must be a whole number</span>
 			   		<br/>
-			   		
+			   		<p>Note: Returning will erase current product data.</p>
 			   		<button type="button" class="btn btn-default btn-lg tabButton" ng-click="return()">Return</button>
 
 					<!-- Triggers PHP to INSERT new product? -->
-					<button type="submit" class="btn btn-default btn-lg tabButton">{{addEditLabel}}</button>
+					<button type="submit" class="btn btn-default btn-lg tabButton">{{addEditLabel}} {{product.name}}</button>
 				</form>
 			</div>
     	</div>
