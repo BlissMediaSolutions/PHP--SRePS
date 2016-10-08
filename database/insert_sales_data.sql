@@ -81,7 +81,7 @@ INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(11, (SELECT Id FROM Sal
 INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(12, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 3);
 
 INSERT INTO Sale(SaleDateTime) VALUES (NOW() - INTERVAL 12 DAY);
-INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(1, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 1);
+INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(1, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 200);
 INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(2, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 1);
 INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(3, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 1);
 INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(4, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 1);
@@ -134,7 +134,7 @@ INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(11, (SELECT Id FROM Sal
 INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(12, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 2);
 
 INSERT INTO Sale(SaleDateTime) VALUES (NOW() - INTERVAL 1 DAY);
-INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(1, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 11);
+INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(1, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 100);
 
 INSERT INTO Sale(SaleDateTime) VALUES (NOW());
 INSERT INTO SaleLine(ProductId, SaleId, Quantity) Values(3, (SELECT Id FROM Sale ORDER BY Id desc LIMIT 1), 1);

@@ -467,7 +467,7 @@ app.controller('ProductController', function($scope, $http) {
             id: product.id,
             name: product.name,
             productGroupId: product.productGroupId,
-            price: product.price,
+            price: Number(product.price),
             quantityOnHand: parseInt(product.quantityOnHand)
         };
 
